@@ -1,0 +1,118 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 1800
+
+  tomcat:
+    additional-tld-skip-patterns: "*.jar" # 내부 톰켓 사용의 경우, File Not Found발생시
+
+spring:
+  profiles:
+    active: test
+
+manager:
+  id : super
+  passwd : password
+
+app:
+  file:
+    #upload-dir: file:///var/www/lx_admin/uploads/
+    upload-dir: file:///D:/project/Lx/source/lx_telos_admin/uploads/
+
+
+aes:
+  key:
+
+
+logging:
+  level:
+    _org.springframework.web.servlet.HandlerMapping.Mappings: debug
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    first:
+      jdbc-url: jdbc:h2:mem://localhost/~/lx;DB_CLOSE_DELAY=-1;MODE=MySQL;NON_KEYWORDS=year;
+      #jdbc-url: jdbc:h2:tcp://localhost/~/lx
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+      #jdbc-url: jdbc:mariadb://127.0.0.1:3307/lx_telos?useUnicode=true&characterEncoding=utf8
+      #username: root
+      #password: tjdrhd5@
+      #driver-class-name: org.mariadb.jdbc.Driver
+
+    second:
+      #jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521/xe
+      #username: system
+      #password: oracle
+      #driver-class-name: oracle.jdbc.OracleDriver
+      jdbc-url: jdbc:h2:mem://localhost/~/erp;mode=oracle
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+  jpa:
+    first:
+      database-platform: org.hibernate.dialect.H2Dialect
+      show-sql: true
+      generate-ddl: true
+      hibernate:
+        ddl-auto: update
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql: true
+
+    second:
+      #database-platform: org.hibernate.dialect.Oracle10gDialect
+      database-platform: org.hibernate.dialect.H2Dialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: update
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false #테스트용
+  #sql:
+  #  init:
+  #    encoding: utf-8
+  #    mode: always
+      #data-locations: classpath:testinit.sql
+
+

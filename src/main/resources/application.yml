@@ -1,0 +1,300 @@
+server:
+  port: 12000
+  servlet:
+    session:
+      timeout: 1800
+
+  error:
+    whitelabel:
+      enabled: false
+    path : /error #에러 발생 처리 경로
+
+
+  tomcat:
+    additional-tld-skip-patterns: "*.jar" # 내부 톰켓 사용의 경우, File Not Found발생시
+
+app:
+  file:
+    upload-dir: file:///var/www/lx_admin/uploads/
+    #upload-dir: file:///D:/project/Lx/source/lx_telos_admin/uploads/
+
+logging:
+  level:
+    root: info
+    _org.springframework.web.servlet.HandlerMapping.Mappings: info
+    org:
+      hibernate:
+        SQL: info
+
+spring:
+  profiles:
+    active: dev
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    hiddenmethod:
+      filter:
+        enabled: true
+    throw-exception-if-no-handler-found: true # 404 상황에서 에러 처리
+
+  servlet:
+    multipart:
+      location: /var/www/lx_admin/temp
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+
+  main:
+    allow-bean-definition-overriding: true
+
+manager:
+  id : super
+  passwd : password
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile : dev
+
+  datasource:
+    first:
+      jdbc-url: jdbc:mariadb://192.168.0.72:3307/lx_meta?useUnicode=true&characterEncoding=utf8
+      username: lx_meta_user
+      password: lxtjdrhd5@
+      #jdbc-url: jdbc:mariadb://127.0.0.1:3307/lx_meta?useUnicode=true&characterEncoding=utf8
+      #username: root
+      #password: tjdrhd5@
+      hikari:
+        maximum-pool-size: 20
+
+      driver-class-name: org.mariadb.jdbc.Driver
+
+    second:
+      jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521/xe
+      username: system
+      password: oracle
+      driver-class-name: oracle.jdbc.OracleDriver
+
+    third:
+      jdbc-url: jdbc:mariadb://192.168.0.239:3307/dt?useUnicode=true&characterEncoding=utf8
+      username: root
+      password: tjdrhd5@
+      driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    open-in-view : false
+    first:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: true
+      hibernate:
+        ddl-auto: update
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+    second:
+      database-platform: org.hibernate.dialect.Oracle10gDialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql: true
+
+    third:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false #테스트용
+
+
+# mysql / mariadb 암호화 복호화 비밀 키
+aes:
+  key: F63VGK1W27GnwTZBL51piTJxtdlfK50N
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile : stg
+
+  datasource:
+    first:
+      jdbc-url: jdbc:mariadb://127.0.0.1:3306/lx_meta?useUnicode=true&characterEncoding=utf8
+      username: lx_meta_user
+      password: lxtjdrhd5@
+      driver-class-name: org.mariadb.jdbc.Driver
+
+    second:
+      jdbc-url: jdbc:oracle:thin:@127.0.0.1:1521/xe
+      username: root
+      password: tjdrhd5@
+      driver-class-name: oracle.jdbc.OracleDriver
+
+    third:
+      jdbc-url: jdbc:mariadb://54.180.89.91:3306/dt?useUnicode=true&characterEncoding=utf8
+      username: dt_user
+      password: tjdrhd5@
+      driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    first:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: true
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+    second:
+      database-platform: org.hibernate.dialect.Oracle10gDialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql: true
+
+    third:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: true
+
+
+# mysql / mariadb 암호화 복호화 비밀 키
+aes:
+  key: F63VGK1W27GnwTZBL51piTJxtdlfK50N
+
+---
+spring:
+  config:
+    activate:
+      on-profile : prod
+
+  datasource:
+    first:
+      jdbc-url: jdbc:mariadb://127.0.0.1:3306/lx_meta?useUnicode=true&characterEncoding=utf8
+      username: lx_meta_user
+      password: lxtjdrhd5@
+      driver-class-name: org.mariadb.jdbc.Driver
+
+    second:
+      jdbc-url: jdbc:oracle:thin:@//exadb.lx.or.kr:1521/kcscerp
+      username: ESGMETA
+      password: esgmeta20##
+      driver-class-name: oracle.jdbc.OracleDriver
+
+    third:
+      jdbc-url: jdbc:mariadb://10.1.48.212:3306/dt?useUnicode=true&characterEncoding=utf8
+      username: telos
+      password: telos2023!
+      driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    first:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+    second:
+      database-platform: org.hibernate.dialect.Oracle10gDialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql: true
+
+    third:
+      database-platform: org.hibernate.dialect.MariaDB103Dialect
+      show-sql: true
+      generate-ddl: false
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy : org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          highlight_sql : true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: true
+
+# mysql / mariadb 암호화 복호화 비밀 키
+aes:
+  key: F63VGK1W27GnwTZBL51piTJxtdlfK50N
