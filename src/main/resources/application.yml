@@ -31,8 +31,6 @@ logging:
         type:
           descriptor:
             sql: trace
-      mongodb:
-        driver: WARN
 
 ---
 
@@ -41,14 +39,9 @@ spring:
     activate:
       on-profile : dev
 
-  data:
-    mongodb:
-      database: com
-      uri: mongodb://localhost:27017/keti
-
   datasource:
     first:
-      jdbc-url: jdbc:mariadb://192.168.0.14:3307/sop?useUnicode=true&characterEncoding=utf8
+      jdbc-url: jdbc:mariadb://192.168.0.80:3306/febc?useUnicode=true&characterEncoding=utf8
       username: root
       password: tjdrhd5@
       driver-class-name: org.mariadb.jdbc.Driver
@@ -71,7 +64,7 @@ spring:
 
 # mysql / mariadb 암호화 복호화 비밀 키
 aes:
-  key: F63VGK1W27GnwTZBL51piTJxtdlfK50N
+  key: F63VGK1W27GnwTZBL51piTJxtdlfK50A
 
 jwt:
   secret-key: Qiws8sD4mU7CSKhUX6q82t69KEkp7K9ff2QCu4k9gDJNgFUJ

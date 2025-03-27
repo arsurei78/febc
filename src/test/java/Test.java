@@ -1,5 +1,5 @@
-import net.telos.boot.EgovBootApplication;
-import net.telos.cmmn.utils.Aes;
+import net.febc.boot.EgovBootApplication;
+import net.febc.cmmn.utils.Aes;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 

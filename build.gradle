@@ -21,7 +21,7 @@ bootJar{
 }
 
 // TODO 프로젝트 작성시 수정
-group = 'net.telos'
+group = 'net.febc'
 version = 'SNAPSHOT'
 sourceCompatibility = "17"
 
