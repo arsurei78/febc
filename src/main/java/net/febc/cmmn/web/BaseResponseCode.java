@@ -11,7 +11,9 @@ public class BaseResponseCode {
 	public static final String LOGIN_FAIL = "LOGIN_FAIL";
     public static final String NOT_FOUND_USER = "NOT_FOUND_USER";
 
-    private BaseResponseCode(){}
+
+
+	private BaseResponseCode(){}
 
 	public static final String SUCCESS = "SUCCESS"; // 성공
 	public static final String ERROR = "ERROR"; // 에러
@@ -30,5 +32,17 @@ public class BaseResponseCode {
 	public static final String JWT_TOKEN_EXPIRED = "JWT_TOKEN_EXPIRED";
 	public static final String JWT_AUTHORIZATION_ERROR = "JWT_AUTHORIZATION_ERROR";
 	public static final String JWT_TOKEN_ERROR = "JWT_TOKEN_ERROR";
+
+	// 이름 체크
+	public static final String MEMBER_NAME_NOT_INPUT = "MEMBER_NAME_NOT_INPUT";
+	public static final String MEMBER_NAME_HANGUL = "MEMBER_NAME_HANGUL";
+	public static final String MEMBER_IS_NOT_FOUND = "MEMBER_IS_NOT_FOUND";
+	// 성별 체크
+	public static final String MEMBER_SEX_NOT_INPUT = "MEMBER_SEX_NOT_INPUT";
+	public static final String MEMBER_SEX_TYPE = "MEMBER_SEX_TYPE";
+	// 기수 체크
+	public static final String MEMBER_GENERATION_NOT_INPUT = "MEMBER_GENERATION_NOT_INPUT";
+	// 회비 체크
+	public static final String MEMBER_DUES_NOT_INPUT = "MEMBER_DUES_NOT_INPUT";
 }
 

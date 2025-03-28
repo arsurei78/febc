@@ -1,6 +1,13 @@
 server:
   port: 12000
 
+  error:
+    whitelabel:
+      enabled: false
+    path : /error #에러 발생 처리 경로
+
+    tomcat:
+      additional-tld-skip-patterns: "*.jar" # 내부 톰켓 사용의 경우, File Not Found발생시
 app:
   file:
     upload-dir: file:///var/www/token/uploads/
@@ -61,6 +68,13 @@ spring:
           format_sql: true #To beautify or pretty print the SQL
           show_sql: true #show sql
           highlight_sql : true
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false #테스트용
 
 # mysql / mariadb 암호화 복호화 비밀 키
 aes:

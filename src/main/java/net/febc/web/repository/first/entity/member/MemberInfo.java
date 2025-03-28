@@ -24,9 +24,22 @@ public class MemberInfo extends BaseTime {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 64)
+    @Comment("이름")
     private String name;
 
-    @Column(name = "join_at")
+    @Column(name = "sex", nullable = false)
+    @Comment("성별")
+    private String sex;
+
+    @Column(name = "generation", nullable = false)
+    @Comment("기수")
+    private Integer generation;
+    
+    @Column(name = "dues", nullable = false)
+    @Comment("회비")
+    private Integer dues;
+
+    @Column(name = "join_at", nullable = false)
     @Comment("입단일")
     private LocalDate joinAt;
 

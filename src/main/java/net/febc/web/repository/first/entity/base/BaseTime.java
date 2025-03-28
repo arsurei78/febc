@@ -27,5 +27,6 @@ public class BaseTime {
 
     public BaseTime() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

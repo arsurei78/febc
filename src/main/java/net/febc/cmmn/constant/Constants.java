@@ -27,6 +27,7 @@ public class Constants {
     public static final String DATE_FORMAT_YYYYMMDD_HHMM_HAN = "YYYY년 MM월 dd일 HH시 mm분";
 
     // 영문 대/소문자, 한글, 숫자 사용가능
+    public static final String CHECK_PATTERN_HANGUL_ALL = "^[가-힣]{2,6}$";
     public static final String CHECK_PATTERN_STRING_ALL = "^(?! )[0-9a-zA-Zㄱ-ㅎ가-힣 ]*";
     public static final String CHECK_PATTERN_PASSWORD = "^[0-9a-zA-Z~!@#$%^&*()_+=]*";
 
@@ -40,6 +41,8 @@ public class Constants {
     public static final String MEETROOM_TYPE_CONFERENCE = "CONFERENCE"; // 대회의실
     public static final String MEETROOM_TYPE_AUDITORIUM = "AUDITORIUM"; // 대강당
 
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer DEFAULT_BLOCK_SIZE = 10;
 
     // 계정 비밀번호 최소 글자수
     public static final Integer PASSWORD_MIN = 8;
