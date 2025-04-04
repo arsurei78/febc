@@ -6,6 +6,13 @@ import java.util.List;
  * 프로젝트내의 상수 설정
  */
 public class Constants {
+
+    // 페이징 블록 사이즈
+    public static final Integer PAGE_BLOCK_SIZE = 10;
+
+    public static final String PAGE_CONTENTS = "contents";
+    public static final String PAGE_PAGINATION = "pagination";
+
     private Constants(){}
 
     // 액세스 토큰

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <div th:replace="layout/layout_header.html::header"></div>
+</head>
+<body>
+  <div class="container mt-5">
+    <h3 class="mb-3 text-center">단원 리스트</h3>
+    <div class="text-end mb-3">
+      <a class="btn btn-warning" role="button" aria-disabled="true" th:href="|/member/view/write|">신규 단원 등록</a>
+    </div>
+
+    <table class="table table-bordered table-striped text-center align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th style="width: 10%;">No</th>
+          <th style="width: 20%;">기수</th>
+          <th style="width: 20%;">이름</th>
+          <th style="width: 20%;">상태</th>
+          <th style="width: 30%;"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr th:if="${contents.isEmpty()}">
+        <td class="text-center" colspan="9">검색 결과가 없습니다.</td>
+      </tr>
+      <tr th:unless="${contents.isEmpty()}" th:each="content, status : ${contents}" >
+        <td th:text="${content.memberId}"></td>
+        <td th:text="${content.generation}"></td>
+        <td th:text="${content.name}"></td>
+        <td th:if="${content.state}">입단중</td>
+        <td th:unless="${content.state}">퇴단</td>
+        <td>
+            <div class="d-flex justify-content-center align-items-center">
+              <a class="btn btn-success btn-sm" role="button" aria-disabled="true" th:href="|/member/view/write|">수정</a>
+            </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:replace="layout/pagination.html::page"></div>
+  <!-- Bootstrap JS (선택 사항) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<footer th:replace="layout/layout_footer.html::footer">
+</footer>

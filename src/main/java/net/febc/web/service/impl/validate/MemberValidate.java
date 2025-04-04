@@ -30,14 +30,14 @@ public class MemberValidate {
         // 입력 체크
         if (StringUtils.isBlank(insertDto.getName())) {
             return List.of(new ValidateErrorResponse("name", BaseResponseCode.MEMBER_NAME_NOT_INPUT));
-        } else if(insertDto.getName().matches(Constants.CHECK_PATTERN_HANGUL_ALL)) {
+        } else if(!insertDto.getName().matches(Constants.CHECK_PATTERN_HANGUL_ALL)) {
             // 한글 체크
             return List.of(new ValidateErrorResponse("name", BaseResponseCode.MEMBER_NAME_HANGUL));
         }
         // 입력체크
-        if (StringUtils.isBlank(insertDto.getSex())) {
+        if (StringUtils.isBlank(insertDto.getGender())) {
             return List.of(new ValidateErrorResponse("sex", BaseResponseCode.MEMBER_SEX_NOT_INPUT));
-        } else if (List.of(GENDER_MALE, GENDER_FEMALE).contains(insertDto.getSex())) {
+        } else if (!List.of(GENDER_MALE, GENDER_FEMALE).contains(insertDto.getGender())) {
             // 성별 확인
             return List.of(new ValidateErrorResponse("sex", BaseResponseCode.MEMBER_SEX_TYPE));
         }

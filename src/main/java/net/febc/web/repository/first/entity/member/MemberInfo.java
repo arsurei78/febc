@@ -29,7 +29,7 @@ public class MemberInfo extends BaseTime {
 
     @Column(name = "sex", nullable = false)
     @Comment("성별")
-    private String sex;
+    private String gender;
 
     @Column(name = "generation", nullable = false)
     @Comment("기수")

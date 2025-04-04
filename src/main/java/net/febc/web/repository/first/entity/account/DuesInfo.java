@@ -30,7 +30,7 @@ public class DuesInfo {
     @Comment("입금년")
     private Integer year;
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "month", nullable = false)
     @Comment("입금월")
     private Integer month;
 

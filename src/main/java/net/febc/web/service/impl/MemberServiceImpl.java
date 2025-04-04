@@ -1,12 +1,14 @@
 package net.febc.web.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import net.febc.cmmn.constant.Constants;
 import net.febc.cmmn.web.BaseResponse;
 import net.febc.cmmn.web.BaseResponseCode;
 import net.febc.cmmn.web.ValidateErrorResponse;
 import net.febc.web.dto.req.member.ReqChgDto;
 import net.febc.web.dto.req.member.ReqInsertDto;
 import net.febc.web.dto.req.member.ReqListDto;
+import net.febc.web.dto.res.BasePaginationDto;
 import net.febc.web.dto.res.member.ResDetailDto;
 import net.febc.web.dto.res.member.ResListDto;
 import net.febc.web.repository.first.entity.member.MemberInfo;
@@ -108,9 +110,14 @@ public class MemberServiceImpl {
      * 멤버 리스트
      * @return
      */
-    public BaseResponse<Page<ResListDto>> listMember(ReqListDto reqListDto) {
+    public BaseResponse<BasePaginationDto> listMember(ReqListDto reqListDto) {
+        // 전달받은 값이 없으면 새로 생ㅅ어
+        if (reqListDto == null) {
+            reqListDto = new ReqListDto();
+        }
+        Page<ResListDto> memberInfoList = memberInfoRepositoryImpl.getMemberInfoList(reqListDto);
         // 멤버 리스트 반환
-        return new BaseResponse<>(memberInfoRepositoryImpl.getMemberInfoList(reqListDto));
+        return new BaseResponse<>(new BasePaginationDto<>(memberInfoList, reqListDto.getOffset(), Constants.PAGE_BLOCK_SIZE));
     }
 
     /**

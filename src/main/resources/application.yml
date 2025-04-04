@@ -48,7 +48,7 @@ spring:
 
   datasource:
     first:
-      jdbc-url: jdbc:mariadb://192.168.0.80:3306/febc?useUnicode=true&characterEncoding=utf8
+      jdbc-url: jdbc:mariadb://192.168.0.68:3307/febc?useUnicode=true&characterEncoding=utf8
       username: root
       password: tjdrhd5@
       driver-class-name: org.mariadb.jdbc.Driver

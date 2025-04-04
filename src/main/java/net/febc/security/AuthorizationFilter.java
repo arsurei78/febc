@@ -37,7 +37,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     // 요청 인증 무시 패스
     public static final List<String> EXCLUDE_URL = List.of(
             "/login", "/logout", "/account/join/**", "/token/**",
-            "/uploads/**", "/test/**",
+            "/uploads/**", "/member/**",
+            "/js/**", "/css/**", "/fonts/**", "/images/**",
             "/system/meta", "/system/init/**", "/v3/api-docs",
             "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui/**", "/favicon.ico");
 

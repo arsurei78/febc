@@ -35,7 +35,14 @@ public class EgovWebMvcConfiguration extends WebMvcConfigurationSupport {
 
 		registry.addResourceHandler("/swagger-ui/**")
 				.addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
-
+		/* '/js/**'로 호출하는 자원은 '/js/' 폴더 아래에서 찾는다. */
+		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/").setCachePeriod(60 * 60 * 24 * 365);
+		/* '/css/**'로 호출하는 자원은 '/css/' 폴더 아래에서 찾는다. */
+		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/").setCachePeriod(60 * 60 * 24 * 365);
+		/* '/img/**'로 호출하는 자원은 '/img/' 폴더 아래에서 찾는다. */
+		registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/images/").setCachePeriod(60 * 60 * 24 * 365);
+		/* '/font/**'로 호출하는 자원은 '/font/' 폴더 아래에서 찾는다. */
+		registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/").setCachePeriod(60 * 60 * 24 * 365);
 	}
 
 

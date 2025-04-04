@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="page">
+    <nav aria-label="Contacts Page Navigation">
+        <ul class="pagination justify-content-center m-0">
+            <li class="page-item">
+                <a class="page-link" th:href="|javascript:page(1)|" aria-label="Previous">
+                    <span aria-hidden="true">처음</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="|javascript:page(${pagination.prevBlock})|" aria-label="Previous">
+                    <span aria-hidden="true">이전</span>
+                </a>
+            </li>
+            <th:block  th:with="start = ${pagination.startPage}, end = ${pagination.endPage}">
+                <li class="page-item"
+                    th:with="start = ${pagination.startPage}, end = ${pagination.endPage}"
+                    th:each="pageButton : ${#numbers.sequence(start, end)}">
+                    <a class="page-link" th:href="|javascript:page(${pageButton})|" th:text="${pageButton}"></a>
+                </li>
+            </th:block>
+            <li class="page-item">
+                <a class="page-link" th:href="|javascript:page(${pagination.nextBlock})|" aria-label="Next">
+                    <span aria-hidden="true">다음</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="|javascript:page(${pagination.totalPageCnt})|" aria-label="Previous">
+                    <span aria-hidden="true">끝</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="|javascript:page(${pagination.page})|" aria-label="Current Page">
+                    <span aria-hidden="true">현재 페이지[<span th:text="${pagination.page} + '/' + ${pagination.totalPageCnt}"></span>]</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

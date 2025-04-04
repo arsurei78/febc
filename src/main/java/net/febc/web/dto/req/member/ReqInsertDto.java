@@ -16,7 +16,7 @@ public class ReqInsertDto {
     @ApiModelProperty(value = "이름", example = "홍길동")
     private String name;
     @ApiModelProperty(value = "성별(M:남성, F:여성)", example = "F")
-    private String sex;
+    private String gender;
     @ApiModelProperty(value = "기수", example = "1")
     private Integer generation;
     @ApiModelProperty(value = "회비", example = "70000")
@@ -30,10 +30,11 @@ public class ReqInsertDto {
         return MemberInfo
                 .builder()
                 .name(name)
-                .sex(sex)
+                .gender(gender)
                 .generation(generation)
                 .dues(dues)
                 .joinAt(LocalDate.now())
+                .state(Boolean.TRUE)
                 .build();
     }
 }
