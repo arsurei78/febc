@@ -62,6 +62,7 @@ public class MemberServiceImpl {
         MemberInfo memberInfo = memberInfoRepository.findById(reqChgDto.getId()).orElse(null);
         memberInfo.setGeneration(reqChgDto.getGeneration());
         memberInfo.setDues(reqChgDto.getDues());
+        memberInfo.setGender(reqChgDto.getGender());
         return new BaseResponse<>(new ResDetailDto(memberInfo));
     }
 

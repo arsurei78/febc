@@ -27,4 +27,7 @@ public class ExpensesInfo extends BaseTime {
 
     @Column(name = "amount", nullable = false)
     private Integer amount;
+
+    @Column(name = "memo", nullable = false, length = 256)
+    private String memo;
 }

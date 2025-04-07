@@ -69,39 +69,46 @@ public class MemberController {
             model.addAttribute("gender", insertDto.getGender());
             model.addAttribute("generation", insertDto.getGeneration());
             model.addAttribute("dues", insertDto.getDues());
-            model.addAttribute("error", result.getValidate());
+            model.addAttribute("error", result.getValidate().get(0));
             return "/member/write";
         }
         return "redirect:/member/view/detail/"+result.getData().getId();
     }
 
-    @PutMapping
+    @PostMapping("/proc/chg")
     @ApiOperation(tags = "1.멤버 관리", value = "멤버 정보 수정", notes = "멤버 정보 수정")
-    public BaseResponse<ResDetailDto> chgMember(@ModelAttribute ReqChgDto reqChgDto) {
-        return memberService.chgMember(reqChgDto);
+    public String chgMember(@ModelAttribute ReqChgDto reqChgDto, Model model) {
+        BaseResponse<ResDetailDto> result = memberService.chgMember(reqChgDto);
+        if (result.getValidate() != null &&
+                !result.getValidate().isEmpty()) {
+            model.addAttribute("error", result.getValidate().get(0));
+        }
+        return "redirect:/member/view/detail/"+reqChgDto.getId();
     }
     
     @GetMapping("/proc/state/{memberId}")
     @ApiOperation(tags = "1.멤버 관리", value = "멤버 상태 변경", notes = "멤버 상태 변경")
-    @ResponseBody
-    public BaseResponse<ResDetailDto> chgState(@PathVariable("memberId") Long memberId) {
-        return memberService.chgState(memberId);
+    public String chgState(@PathVariable("memberId") Long memberId, Model model) {
+        BaseResponse<ResDetailDto> result = memberService.chgState(memberId);
+        if (result.getValidate() != null &&
+                !result.getValidate().isEmpty()) {
+            model.addAttribute("error", result.getValidate().get(0));
+        }
+        return "redirect:/member/view/detail/"+memberId;
     }
 
     @DeleteMapping("/proc/{memberId}")
     @ApiOperation(tags = "1.멤버 관리", value = "멤버 삭제", notes = "멤버 삭제")
-    @ResponseBody
     public BaseResponse<ResDetailDto> deleteMember(@PathVariable("memberId") Long memberId) {
         return memberService.deleteMember(memberId);
     }
 
-
-    @GetMapping("/proc/{memberId}")
+/*    @GetMapping("/proc/{memberId}")
     @ApiOperation(tags = "1.멤버 관리", value = "멤버 조회", notes = "멤버 조회")
     public String detailMember(@PathVariable("memberId") Long memberId, Model model) {
         BaseResponse<ResDetailDto> result = memberService.detailMember(memberId);
         ResDetailDto data = result.getData();
         model.addAttribute("memberInfo", data);
         return "/member/detail";
-    }
+    }*/
 }

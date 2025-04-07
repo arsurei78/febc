@@ -61,7 +61,7 @@ public class MemberValidate {
     public List<ValidateErrorResponse> checkChg(ReqChgDto reqChgDto) {
 
         // 멤버를 못찾는 경우
-        if (!memberInfoRepository.existsByIdAndState(reqChgDto.getId(), Boolean.TRUE)) {
+        if (!memberInfoRepository.existsById(reqChgDto.getId())) {
             return List.of(new ValidateErrorResponse("memberId", BaseResponseCode.MEMBER_IS_NOT_FOUND));
         }
 

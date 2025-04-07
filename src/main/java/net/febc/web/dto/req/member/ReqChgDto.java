@@ -17,4 +17,7 @@ public class ReqChgDto {
 
     @ApiModelProperty(value = "회비", example = "70000")
     private Integer dues;
+
+    @ApiModelProperty(value = "성별", example = "M:남자, F:여자")
+    private String gender;
 }
