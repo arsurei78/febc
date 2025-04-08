@@ -44,5 +44,19 @@ public class BaseResponseCode {
 	public static final String MEMBER_GENERATION_NOT_INPUT = "MEMBER_GENERATION_NOT_INPUT";
 	// 회비 체크
 	public static final String MEMBER_DUES_NOT_INPUT = "MEMBER_DUES_NOT_INPUT";
+
+	// 지출 / 소비 정보를 찾을수 없음
+	public static final String ACCOUNT_NOT_FOUND = "ACCOUNT_NOT_FOUND";
+	// 존재하지 않는 타입
+	public static final String TYPE_NOT_SUPPORT = "TYPE_NOT_SUPPORT";
+	// 존재하지 소비 / 지출 않는 타입
+	public static final String EXPENSENS_TYPE_NOT_SUPPORT = "EXPENSENS_TYPE_NOT_SUPPORT";
+	// 금액이 적혀있지 않을 경우
+	public static final String AMOUNT_NOT_INPUT = "AMOUNT_NOT_INPUT";
+	// 메모이 적혀있지 않을 경우
+	public static final String MEMO_NOT_INPUT = "MEMO_NOT_INPUT";
+	// 날짜 선택이 잘못되었을떄
+	public static final String EXPENSENS_SELECTED_DATE = "EXPENSENS_SELECTED_DATE";
+
 }
 

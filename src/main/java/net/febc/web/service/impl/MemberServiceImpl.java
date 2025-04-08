@@ -15,7 +15,6 @@ import net.febc.web.repository.first.entity.member.MemberInfo;
 import net.febc.web.repository.first.impl.MemberInfoRepositoryImpl;
 import net.febc.web.repository.first.write.MemberInfoRepository;
 import net.febc.web.service.impl.validate.MemberValidate;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,7 +133,6 @@ public class MemberServiceImpl {
         if(memberInfo == null) {
             return new BaseResponse<>(List.of(new ValidateErrorResponse("member", BaseResponseCode.MEMBER_IS_NOT_FOUND)));
         }
-
         return new BaseResponse<>(new ResDetailDto(memberInfo));
     }
 }

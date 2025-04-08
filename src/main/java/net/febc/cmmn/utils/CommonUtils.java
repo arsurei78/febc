@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +63,17 @@ public class CommonUtils {
         return date.format(DateTimeFormatter.ofPattern(format));
     }
 
+    /**
+     * 문자열을 LocalDate형식 변환
+     *
+     * @param dateFormatter
+     * @param dateStr
+     * @return
+     */
+    public static LocalDate strToLocalDate(String dateFormatter, String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormatter);
+        return LocalDate.parse(dateStr, formatter);
+    }
     /**
      * Integer 타입의 date를 받아서 dateFormat1타입의 Date타입으로 변경후, dateFormat2타입의 문자열로 변경
      *
