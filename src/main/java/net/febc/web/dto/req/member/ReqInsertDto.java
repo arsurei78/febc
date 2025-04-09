@@ -10,16 +10,15 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ApiModel(value = "memberRequest", description = "멤버 정보 작성")
 public class ReqInsertDto {
     
-    @ApiModelProperty(value = "이름", example = "홍길동")
+    // 이름
     private String name;
-    @ApiModelProperty(value = "성별(M:남성, F:여성)", example = "F")
+    // 성별(M:남성, F:여성)
     private String gender;
-    @ApiModelProperty(value = "기수", example = "1")
+    // 기수
     private Integer generation;
-    @ApiModelProperty(value = "회비", example = "70000")
+    // 회비
     private Integer dues;
 
     /**

@@ -35,6 +35,7 @@ public class DuesInfo {
     private Integer month;
 
     @Column(name = "deposit_at", nullable = false)
+    @Comment("입금일")
     private LocalDate depositAT;
 
     @Column(name = "standard_account", nullable = false)
@@ -43,5 +44,8 @@ public class DuesInfo {
 
     @Column(name = "account", nullable = false)
     @Comment("실제 입금액")
-    private Integer account;
+    private Integer deposit;
+
+    @Column(name = "memo", nullable = false, length = 256)
+    private String memo;
 }

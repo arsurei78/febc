@@ -9,15 +9,12 @@ import lombok.Setter;
 @Setter
 @ApiModel(value = "memberRequest", description = "멤버 정보 수정")
 public class ReqChgDto {
-    @ApiModelProperty(value = "멤버 고유 번호", example = "1")
+    // 멤버 고유 번호
     private Long id;
-
-    @ApiModelProperty(value = "기수", example = "1")
+    // 기수
     private Integer generation;
-
-    @ApiModelProperty(value = "회비", example = "70000")
+    // 회비
     private Integer dues;
-
-    @ApiModelProperty(value = "성별", example = "M:남자, F:여자")
+    // 성별
     private String gender;
 }

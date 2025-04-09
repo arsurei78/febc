@@ -3,6 +3,7 @@ package net.febc.web.dto.res.account;
 import lombok.Getter;
 import lombok.Setter;
 import net.febc.cmmn.constant.Constants;
+import net.febc.cmmn.utils.CommonUtils;
 import net.febc.web.repository.first.entity.account.ExpensesInfo;
 
 @Getter
@@ -12,7 +13,9 @@ public class ResDetailDto {
     private Long id;
     private String type;
     private String expensensType;
+    private String date;
     private Integer amount;
+    private String memo;
 
     /**
      *
@@ -23,5 +26,7 @@ public class ResDetailDto {
         type = info.getType();
         expensensType = Constants.expensensMap.get(info.getExpensType().toString());
         amount = info.getAmount();
+        date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMMDD, info.getDate());
+        memo = info.getMemo();
     }
 }

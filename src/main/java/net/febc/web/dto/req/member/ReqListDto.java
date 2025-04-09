@@ -11,13 +11,13 @@ import net.febc.cmmn.constant.Constants;
 @ApiModel(value = "memberRequest", description = "멤버 정보 리스트")
 public class ReqListDto {
 
-    @ApiModelProperty(value = "검색어(이름)", example = "홍길동")
+    // 검색어(이름)
     private String searchData;
-    @ApiModelProperty(value = "상태(입/퇴단 여부, Y:입단, N:퇴단)", example = "Y")
+    // 상태(입/퇴단 여부, Y:입단, N:퇴단)
     private String state;
-    @ApiModelProperty(value = "검색 페이지", example = "1")
+    // 검색 페이지
     private Integer page;
-    @ApiModelProperty(value = "페이지당 출력 건수", example = "10")
+    // 페이지당 출력 건수
     private Integer offset;
 
     // 페이지 값 정리

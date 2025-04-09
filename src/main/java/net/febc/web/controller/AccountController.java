@@ -24,15 +24,19 @@ public class AccountController {
 
     @GetMapping("/view/insert")
     public String insert(Model model) {
-        Map<String, String> expensensMap = Constants.expensensMap;
-        model.addAttribute("expensensType", expensensMap);
+        model.addAttribute("selectedDate", "");
+        model.addAttribute("amount", "");
+        model.addAttribute("memo", "");
+        model.addAttribute("expensensMap", Constants.expensensMap);
         return "account/insert";
     }
 
     @PostMapping("/proc")
     public String insertProc(@ModelAttribute ReqInsertDto dto, Model model) {
         BaseResponse<ResDetailDto> insert = accountService.insert(dto);
-        if (!insert.getValidate().isEmpty()) {
+        if (insert.getValidate() != null &&
+                !insert.getValidate().isEmpty()) {
+            model.addAttribute("expensensMap", Constants.expensensMap);
             model.addAttribute("type", dto.getType());
             model.addAttribute("expensensType", dto.getExpensensType());
             model.addAttribute("selectedDate", dto.getSelectedDate());
@@ -48,23 +52,27 @@ public class AccountController {
     @PostMapping("/proc/chg")
     public String chgProc(@ModelAttribute ReqChgDto chgDto, Model model) {
         BaseResponse<ResDetailDto> result = accountService.chgAccount(chgDto);
-        if (!result.getValidate().isEmpty()) {
+        if (result.getValidate() != null &&
+                !result.getValidate().isEmpty()) {
             return "redirect:/member/view/detail/"+chgDto.getId();
         }
         model.addAttribute("info", result.getData());
-        return "account/detail";
+        model.addAttribute("expensensMap", Constants.expensensMap);
+        return "account/chg";
     }
 
     @GetMapping("/view/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         BaseResponse<ResDetailDto> result = accountService.detailAccount(id);
-        if(!result.getValidate().isEmpty()) {
+        if (result.getValidate() != null &&
+                !result.getValidate().isEmpty()) {
             model.addAttribute("errorMsg", result.getValidate().get(0).getMessage());
             model.addAttribute("error", result.getValidate().get(0).getField());
             return "account/view/list";
         }
+        model.addAttribute("expensensMap", Constants.expensensMap);
         model.addAttribute("info", result.getData());
-        return "account/detail";
+        return "account/chg";
     }
 
     @GetMapping("/view/list")

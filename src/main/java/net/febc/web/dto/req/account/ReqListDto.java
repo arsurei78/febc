@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import net.febc.cmmn.constant.Constants;
 import net.febc.cmmn.utils.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Getter
 @Setter
@@ -48,6 +50,9 @@ public class ReqListDto {
      * @return
      */
     public LocalDate getStartDate() {
+        if (StringUtils.isEmpty(this.startDate)) {
+            return LocalDate.now().withDayOfMonth(1);
+        }
         return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.startDate);
     }
 
@@ -56,6 +61,9 @@ public class ReqListDto {
      * @return
      */
     public LocalDate getEndDate() {
+        if (StringUtils.isEmpty(this.endDate)) {
+            return YearMonth.now().atEndOfMonth();
+        }
         return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.endDate);
     }
 }

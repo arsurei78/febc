@@ -59,7 +59,7 @@ public class AccountInfoRepositoryImpl {
      */
     private BooleanExpression isWhere(ReqListDto dto) {
 
-        // 검색 기간
+        // 검색 기간 (설정이 없으면 당월 데이터 감색)
         BooleanExpression expression = expensesInfo.date.goe(dto.getStartDate()).and(expensesInfo.date.loe(dto.getEndDate()));
 
         // 타입

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <div th:replace="layout/layout_header.html::header"></div>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="container mt-5" style="max-width: 500px;">
+      <h2 class="mb-4 text-center">회비 납입</h2>
+      <form th:action="@{/dues/proc}"  method="post" id="insertForm">
+
+        <!-- 이름 -->
+        <div class="mb-3">
+          <label  class="form-label">이 름</label>
+          <span th:if="${#strings.equals(error, 'username')}">*</span>
+          <label class="form-label" th:text="${info.name}"></label>
+        </div>
+
+        <!-- 회비 -->
+        <div class="mb-3">
+          <label for="amount" class="form-label">회 비</label>
+          <label class="form-label" th:text="${info.amount}">설정된 회비 : </label>
+          <input type="text" class="form-control" id="amount" name="amount" th:value="${amount}" placeholder="${info.amount}" required>
+        </div>
+
+        <!-- 메모 -->
+        <div class="mb-3">
+          <label for="memo">메모를 입력하세요:</label><br>
+          <span th:if="${#strings.equals(error, 'memo')}">*</span>
+          <textarea id="memo" name="memo" rows="5" cols="40"  th:value="${memo}"  placeholder="상세 내역을 적어주세요"></textarea>
+        </div>
+        <!-- 제출 버튼 -->
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary w-100">작성</button>
+        </div>
+        <div class="mb-3">
+          <div class="d-flex justify-content-center align-items-center">
+            <a class="btn btn-secondary w-100" role="button" aria-disabled="true" th:href="|/dues/view/list|">목록으로 돌아가기</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Bootstrap JS (선택사항, 일부 컴포넌트에 필요) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    // 오늘 날짜 구하기 (YYYY-MM-DD 형식)
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedToday = `${year}-${month}-${day}`;
+
+    let selected = "[[${selectedDate}]]";
+    if (!selected && selected !== "") {
+      formattedToday = selected;
+    }
+    // 초기 히든값
+    $("#selectedDate").val(formattedToday);
+
+    // flatpickr 초기화
+    flatpickr("#datePicker", {
+      dateFormat: "Y-m-d",
+      minDate: "0203-01-01",
+      maxDate: "2050-12-31",
+      defaultDate: formattedToday,
+      onChange: function(selectedDates, dateStr) {
+        $("#selectedDate").val(dateStr);
+      }
+    });
+  </script>
+  <footer th:replace="layout/layout_footer.html::footer">
+  </footer>

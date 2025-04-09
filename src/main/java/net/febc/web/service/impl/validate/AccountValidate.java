@@ -32,7 +32,7 @@ public class AccountValidate {
             return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
-        if(List.of("I", "O").contains(dto.getType())) {
+        if(StringUtils.isEmpty(dto.getType()) || !List.of("I", "O").contains(dto.getType())) {
             return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
         }
 
@@ -71,7 +71,7 @@ public class AccountValidate {
             return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
-        if(List.of("I", "O").contains(dto.getType())) {
+        if(StringUtils.isEmpty(dto.getType()) || !List.of("I", "O").contains(dto.getType())) {
             return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
         }
 

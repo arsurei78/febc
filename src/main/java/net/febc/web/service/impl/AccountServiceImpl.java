@@ -52,6 +52,7 @@ public class AccountServiceImpl {
      * @param dto
      * @return
      */
+    @Transactional
     public BaseResponse<ResDetailDto> chgAccount(ReqChgDto dto) {
 
         List<ValidateErrorResponse> result = validate.chgAccount(dto);
