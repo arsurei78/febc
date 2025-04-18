@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
+<div th:replace="layout/layout_menu.html::menu"></div>
 <div class="content-wrapper">
   <div class="container mt-5" style="max-width: 500px;">
     <h2 class="mb-4 text-center">지출 / 수입</h2>
@@ -72,6 +73,8 @@
     </form>
   </div>
 </div>
+<footer th:replace="layout/layout_footer.html::footer">
+</footer>
 <!-- Bootstrap JS (선택사항, 일부 컴포넌트에 필요) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -101,5 +104,3 @@
     }
   });
 </script>
-<footer th:replace="layout/layout_footer.html::footer">
-</footer>

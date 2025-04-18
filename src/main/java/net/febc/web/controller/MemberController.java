@@ -1,6 +1,5 @@
 package net.febc.web.controller;
 
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import net.febc.cmmn.constant.Constants;
 import net.febc.cmmn.web.BaseResponse;
@@ -45,7 +44,6 @@ public class MemberController {
     }
 
     @PostMapping("/proc/list")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 리스트 조회", notes = "멤버 리스트 조회")
     @ResponseBody
     public String listMember(@RequestBody ReqListDto reqListDto, Model model) {
         BaseResponse<BasePaginationDto> result = memberService.listMember(reqListDto);
@@ -57,7 +55,6 @@ public class MemberController {
     }
 
     @PostMapping("/proc")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 정보 작성", notes = "멤버 정보 작성")
     public String writeMember(@ModelAttribute ReqInsertDto insertDto, Model model) {
         BaseResponse<ResDetailDto> result = memberService.writeMember(insertDto);
         // 유효성 체크 에러의 경우, 원 화면
@@ -74,7 +71,6 @@ public class MemberController {
     }
 
     @PostMapping("/proc/chg")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 정보 수정", notes = "멤버 정보 수정")
     public String chgMember(@ModelAttribute ReqChgDto reqChgDto, Model model) {
         BaseResponse<ResDetailDto> result = memberService.chgMember(reqChgDto);
         if (result.getValidate() != null &&
@@ -85,7 +81,6 @@ public class MemberController {
     }
     
     @GetMapping("/proc/state/{memberId}")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 상태 변경", notes = "멤버 상태 변경")
     public String chgState(@PathVariable("memberId") Long memberId, Model model) {
         BaseResponse<ResDetailDto> result = memberService.chgState(memberId);
         if (result.getValidate() != null &&
@@ -96,7 +91,6 @@ public class MemberController {
     }
 
     @DeleteMapping("/proc/{memberId}")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 삭제", notes = "멤버 삭제")
     public BaseResponse<ResDetailDto> deleteMember(@PathVariable("memberId") Long memberId) {
         return memberService.deleteMember(memberId);
     }

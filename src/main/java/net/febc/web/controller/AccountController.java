@@ -46,7 +46,7 @@ public class AccountController {
             model.addAttribute("error", insert.getValidate().get(0).getField());
             return "account/insert";
         }
-        return "redirect:/member/view/detail/"+insert.getData().getId();
+        return "redirect:/account/view/detail/"+insert.getData().getId();
     }
 
     @PostMapping("/proc/chg")
@@ -54,7 +54,7 @@ public class AccountController {
         BaseResponse<ResDetailDto> result = accountService.chgAccount(chgDto);
         if (result.getValidate() != null &&
                 !result.getValidate().isEmpty()) {
-            return "redirect:/member/view/detail/"+chgDto.getId();
+            return "redirect:/account/view/detail/"+chgDto.getId();
         }
         model.addAttribute("info", result.getData());
         model.addAttribute("expensensMap", Constants.expensensMap);

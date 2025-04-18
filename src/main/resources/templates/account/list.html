@@ -3,49 +3,53 @@
 <head>
   <div th:replace="layout/layout_header.html::header"></div>
 </head>
-<div>
-  <div class="content-wrapper">
-    <div class="container mt-5">
-      <h3 class="mb-3 text-center">지출 / 수입 리스트</h3>
-      <div class="text-end mb-3">
-        <a class="btn btn-warning" role="button" aria-disabled="true" th:href="|/account/view/insert|">지출 / 수입 등록</a>
-      </div>
+<body>
+    <div th:replace="layout/layout_menu.html::menu"></div>
+    <div>
+        <div class="content-wrapper">
+        <div class="container mt-5">
+          <h3 class="mb-3 text-center">지출 / 수입 정보</h3>
+          <div class="text-end mb-3">
+            <a class="btn btn-warning" role="button" aria-disabled="true" th:href="|/account/view/insert|">지출 / 수입 등록</a>
+          </div>
 
-      <table class="table table-bordered table-striped text-center align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th style="width: 5%;">No</th>
-            <th style="width: 15%;">해당 일</th>
-            <th style="width: 20%;">지출종류</th>
-            <th style="width: 20%;">지출 내역</th>
-            <th style="width: 20%;">지출 금액</th>
-            <th style="width: 20%;"></th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${contents.isEmpty()}">
-          <td class="text-center" colspan="9">검색 결과가 없습니다.</td>
-        </tr>
-        <tr th:unless="${contents.isEmpty()}" th:each="content, status : ${contents}" >
-          <td th:text="${content.id}"></td>
-          <td th:text="${content.date}"></td>
-          <td >
-            <span th:if="${#strings.equals(content.type, 'I')}">수입</span>
-            <span th:if="${#strings.equals(content.type, 'O')}">지출</span>
-          </td>
-          <td th:text="${content.expensensType}"></td>
-          <td th:text="${content.amount}"></td>
-          <td>
-              <div class="d-flex justify-content-center align-items-center">
-                <a class="btn btn-success btn-sm" role="button" aria-disabled="true" th:href="|/account/view/detail/${content.id}|">수정</a>
-              </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>`
-</div>
-  <div th:replace="layout/pagination.html::page"></div>
+          <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 5%;">No</th>
+                <th style="width: 15%;">해당 일</th>
+                <th style="width: 20%;">지출종류</th>
+                <th style="width: 20%;">지출 내역</th>
+                <th style="width: 20%;">지출 금액</th>
+                <th style="width: 20%;"></th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${contents.isEmpty()}">
+              <td class="text-center" colspan="9">검색 결과가 없습니다.</td>
+            </tr>
+            <tr th:unless="${contents.isEmpty()}" th:each="content, status : ${contents}" >
+              <td th:text="${content.id}"></td>
+              <td th:text="${content.date}"></td>
+              <td >
+                <span th:if="${#strings.equals(content.type, 'I')}">수입</span>
+                <span th:if="${#strings.equals(content.type, 'O')}">지출</span>
+              </td>
+              <td th:text="${content.expensensType}"></td>
+              <td th:text="${content.amount}"></td>
+              <td>
+                  <div class="d-flex justify-content-center align-items-center">
+                    <a class="btn btn-success btn-sm" role="button" aria-disabled="true" th:href="|/account/view/detail/${content.id}|">수정</a>
+                  </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>`
+        </div>
+        <div th:replace="layout/pagination.html::page"></div>
+    </div>
+</body>
   <!-- Bootstrap JS (선택 사항) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

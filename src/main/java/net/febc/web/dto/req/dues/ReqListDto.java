@@ -1,4 +1,4 @@
-package net.febc.web.dto.req.account;
+package net.febc.web.dto.req.dues;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +15,8 @@ public class ReqListDto {
 
     // 검색어
     private String searchData;
-    // 타입 지출(O) / 수입 타입(I)"
+    // 납부 타입(C:납부 완료, N:미납 )
     private String type;
-    // 지출 / 수입 타입(교사 사례비(TS), 지방세(LOT), 소득세(INT), 선물(GIFT), 간식비(SNACK), 악보제본비(SHEET), 기타(ORTHER))"
-    private String expensensType;
     // 검색 시작일
     private String startDate;
     // 검색 종료일

@@ -1,4 +1,4 @@
-package net.febc.web.dto.res.account;
+package net.febc.web.dto.res.dues;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
@@ -15,25 +15,30 @@ public class ResListDto {
 
     // 고유 ID
     private Long id;
-    // 타입 지출(O) / 수입 타입(I)"
-    private String type;
-    // 지출 / 수입 타입(교사 사례비(TS), 지방세(LOT), 소득세(INT), 선물(GIFT), 간식비(SNACK), 악보제본비(SHEET), 기타(ORTHER))"
-    private String expensensType;
-    // 날짜
+    // 납입 대상월
+    private String paymentMonth;
+    // 납입일
     private String date;
-    // 금액
+    // 납입금액
     private Integer amount;
+    // 납입대상
+    private String name;
+    // 기수
+    private Integer generation;
 
     @QueryProjection
     public ResListDto(Long id,
-                      String type,
-                      ExpensensEnum expensensEnum,
                       LocalDate date,
-                      Integer amount) {
+                      Integer year,
+                      Integer month,
+                      Integer generation,
+                      Integer amount,
+                      String name) {
         this.id = id;
-        this.type = type;
-        this.expensensType = Constants.expensensMap.get(expensensEnum.toString());
         this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, date);
+        this.paymentMonth = String.format("%d년 %d월", year, month);
         this.amount = amount;
+        this.generation = generation;
+        this.name = name;
     }
 }

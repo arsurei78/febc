@@ -14,33 +14,28 @@ plugins {
     id "org.sonarqube" version "4.2.1.3168"
 }
 
+group = 'net.febc'
+version = 'SNAPSHOT'
+sourceCompatibility = "17"
+targetCompatibility = JavaVersion.VERSION_17
+
 application {
     mainClassName = "net.febc.boot.EgovBootApplication"
 }
 
-// TODO 프로젝트 작성시 수정
-bootJar{
-    archivesBaseName = 'sessionTemplate' // 프로젝트 이름
-    archiveFileName = 'empty_project-SNAPSHOT.jar' // 새성되는 jar파일 이름
-    archiveVersion = "0.0.1" // 버전
+bootJar {
+    archivesBaseName = 'sessionTemplate'
+    archiveFileName = 'empty_project-SNAPSHOT.jar'
+    archiveVersion = "0.0.1"
 }
 
-// TODO 프로젝트 작성시 수정
-group = 'net.febc'
-version = 'SNAPSHOT'
-sourceCompatibility = "17"
-
 configurations {
-    all {
-        //logback과의 충돌 방지
-        exclude group : 'org.springframework.boot', module : 'spring-boot-starter-logging'
-    }
     compileOnly {
         extendsFrom annotationProcessor
     }
+    querydsl.extendsFrom compileClasspath
 }
- 
-// Set repository
+
 repositories {
     mavenCentral()
     maven {
@@ -52,183 +47,104 @@ repositories {
     }
 }
 
-// Set source directory
+def querydslDir = "$buildDir/generated/querydsl"
+
 sourceSets {
     main {
         java {
-            srcDir 'src/main/java'
-            srcDir 'src/test/java'
+            srcDirs = ['src/main/java', querydslDir]
         }
         resources {
-            srcDir 'src/main/resources'
-            srcDir 'src/test/resources'
+            srcDirs = ['src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
         }
     }
 }
- 
-// dependencies to run on tomcat, are mandatory for tomcat plugin
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+compileJava.dependsOn compileQuerydsl
+
 dependencies {
-    // jpa
+    // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+//    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
-    // web
-    implementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // mariadb 드라이버
+    // DB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'com.h2database:h2:2.2.222'
 
-    // 자동으로 서버 재 시작 설정적용
-    compileOnly("org.springframework.boot:spring-boot-devtools")
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+    testAnnotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-    // Log4j2
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-
-    //전자정부프레임워크
-    implementation ("org.egovframe.rte:org.egovframe.rte.ptl.mvc:${egovframe}"){
-        exclude group : 'org.egovframe.rte', module : 'spring-modules-validation'
-        exclude group : 'commons-logging', module : 'commons-logging'
+    // EgovFrame`
+    implementation("org.egovframe.rte:org.egovframe.rte.ptl.mvc:${egovframe}") {
+        exclude group: 'org.egovframe.rte', module: 'spring-modules-validation'
+        exclude group: 'commons-logging', module: 'commons-logging'
     }
     implementation "org.egovframe.rte:org.egovframe.rte.fdl.cmmn:${egovframe}"
     implementation "org.egovframe.rte:org.egovframe.rte.bat.core:${egovframe}"
     implementation "org.egovframe.rte:org.egovframe.rte.fdl.idgnr:${egovframe}"
     implementation "org.egovframe.rte:org.egovframe.rte.fdl.property:${egovframe}"
-    //implementation "org.egovframe.rte:org.egovframe.rte.fdl.security:${egovframe}"
-    //implementation "org.egovframe.rte:org.egovframe.rte.fdl.excel:${egovframe}"
 
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    // 기타 유틸
     implementation 'org.apache.commons:commons-lang3:3.0'
-
-    implementation 'org.apache.commons:commons-compress:1.1'
-
     implementation 'org.apache.commons:commons-dbcp2'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-    implementation 'org.springframework:spring:5.3.20'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'commons-codec:commons-codec:1.9'
+    implementation 'commons-fileupload:commons-fileupload:1.5'
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
 
-    // HSQLDB
-    //implementation 'org.hsqldb:hsqldb:2.5.2'
-    runtimeOnly 'com.h2database:h2:2.2.222'
+    // JSON / JWT
+    implementation 'com.auth0:java-jwt:3.19.2'
+    implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:0.11.5"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
-    //querydsl 추가
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-
-    // https://mvnrepository.com/artifact/rhino/js
-    //implementation group: 'rhino', name: 'js', version: '1.6R2'
-
-    //websocket
-    //implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    //implementation 'org.webjars:sockjs-client:1.1.2'
-    //implementation 'org.webjars:stomp-websocket:2.3.3-1'
-
-
-    // thymeleaf
-    //implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    //implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-    // thymeleaf Security용
-    //implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-
-    // Security
+    // Spring Security
     implementation "org.springframework.security:spring-security-core:5.7.1"
     implementation "org.springframework.security:spring-security-web:5.7.1"
     implementation "org.springframework.security:spring-security-config:5.7.1"
-    // JWT
-    implementation 'com.auth0:java-jwt:3.19.2'
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-    //swagger
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
-    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+    // Swagger
+//    implementation "io.springfox:springfox-boot-starter:3.0.0"
+//    implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-//    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.0'
-
-    //implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
-// https://mvnrepository.com/artifact/javax.validation/validation-api
-    implementation 'javax.validation:validation-api:2.0.1.Final'
-
-//    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    // https://mvnrepository.com/artifact/org.apache.tika/tika-core
-    implementation 'org.apache.tika:tika-core:2.7.0'
-
-    annotationProcessor 'org.projectlombok:lombok'
+    // lombok
     compileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
-    implementation 'com.googlecode.json-simple:json-simple:1.1'
-
-    // JUNIT
+    // JUnit & Mockito
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.1.1'
     testImplementation 'org.mockito:mockito-core:5.1.1'
     testImplementation 'org.mockito:mockito-inline:5.1.1'
-    // 테스트용
-    implementation 'commons-fileupload:commons-fileupload:1.5'
-    implementation 'commons-io:commons-io:2.11.0'
-    // bigdecimal
-    compile group: 'com.jtransc', name: 'jtransc-rt', version: '0.6.1'
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation 'commons-codec:commons-codec:1.9'
-
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.1.1'
 }
 
 test {
-    useJUnitPlatform()
-}
-
-
-tasks.named('test') {
     useJUnitPlatform()
     processResources {
         duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
     }
 }
-
-/*
- * queryDSL 설정 추가
- */
-// querydsl에서 사용할 경로 설정
-def querydslDir = "$buildDir/generated/querydsl"
-
-// JPA 사용 여부와 사용할 경로를 설정
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-// build 시 사용할 sourceSet 추가
-sourceSets {
-    main.java.srcDir querydslDir
-}
-
-// querydsl 컴파일시 사용할 옵션 설정
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-// querydsl 이 compileClassPath 를 상속하도록 설정
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
-targetCompatibility = JavaVersion.VERSION_17
-
-
-sonarqube {
-    properties {
-        property 'sonar.projectKey', 'telos_lx-meta_lx-api_AYuPUJsbHMLdITbMV-px'
-        property 'sonar.projectName', 'lx-api'
-        property 'sonar.host.url', 'http://192.168.0.185:9000'
-        property 'sonar.token', 'sqp_68eec2ee4e627be09e2ae06c842dba47e8bec3ee'
-        property 'sonar.exclusions', "**/test/**"
-    }
-}
-

@@ -10,7 +10,7 @@ import net.febc.web.dto.req.account.ReqInsertDto;
 import net.febc.web.repository.comm.ExpensensEnum;
 import net.febc.web.repository.first.write.ExpensesInfoRepository;
 import org.apache.commons.lang3.EnumUtils;
-import org.apache.tika.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

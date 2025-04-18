@@ -1,14 +1,11 @@
 package net.febc.web.dto.req.member;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import net.febc.cmmn.constant.Constants;
 
 @Getter
 @Setter
-@ApiModel(value = "memberRequest", description = "멤버 정보 리스트")
 public class ReqListDto {
 
     // 검색어(이름)

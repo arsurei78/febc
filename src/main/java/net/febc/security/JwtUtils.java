@@ -15,17 +15,23 @@ import net.febc.cmmn.utils.CommonUtils;
 import net.febc.cmmn.web.BaseResponseCode;
 import net.febc.web.dto.res.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 
 import static net.febc.cmmn.constant.Constants.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -106,6 +112,53 @@ public class JwtUtils {
         // 현재 시간
         LocalDateTime localDateTime = new Timestamp(expireTime.getTime()).toLocalDateTime();
         return new TokenDto(Constants.AT_HEADER, token, CommonUtils.dateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS, localDateTime));
+    }
+
+    private String extractTokenFromCookies(Cookie[] cookies) {
+        if (cookies == null) return null;
+        for (Cookie cookie : cookies) {
+            if ("jwt".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * JWT토큰의 유효성 체크
+     * @param request
+     * @return
+     */
+    public Object checkCookieJwt(HttpServletRequest request) {
+        // 쿠키에서 정보를 조회
+        String authorization = extractTokenFromCookies(request.getCookies());
+
+        // 인증정보가 없는 경우 에러반환
+        if (!StringUtils.hasText(authorization)){
+            // 인증 토큰 에러
+            return BaseResponseCode.JWT_AUTHORIZATION_HEADER;
+        }
+
+        DecodedJWT verify;
+
+        try {
+            // 검증클래스 생성
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(appConstants.getMJWT_SECRET())).build();
+            // 토큰 검증
+            verify = verifier.verify(authorization);
+        } catch (TokenExpiredException e) {
+            // 토큰 기간 만료 에러
+            return BaseResponseCode.JWT_TOKEN_EXPIRED;
+        } catch (AlgorithmMismatchException
+                 | SignatureVerificationException
+                 | InvalidClaimException e ) {
+            return BaseResponseCode.JWT_AUTHORIZATION_ERROR;
+        } catch (RuntimeException e) {
+            // 기타 에러
+            return BaseResponseCode.JWT_TOKEN_ERROR;
+        }
+
+        return verify;
     }
 
     /**

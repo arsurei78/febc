@@ -35,6 +35,7 @@ public class Constants {
     public static final String DATE_FORMAT_YYYYMMDD_HAN = "yyyy년 MM월 dd일";
     public static final String DATE_FORMAT_YYMMDD_HAN = "yy년 MM월 dd일";
     public static final String DATE_FORMAT_YYYYMMDD_HHMM_HAN = "YYYY년 MM월 dd일 HH시 mm분";
+    public static final String DATE_FORMAT_YYYYMM = "yy년 MM월";
 
     // 영문 대/소문자, 한글, 숫자 사용가능
     public static final String CHECK_PATTERN_HANGUL_ALL = "^[가-힣]{2,6}$";

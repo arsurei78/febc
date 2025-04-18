@@ -36,11 +36,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     // 요청 인증 무시 패스
     public static final List<String> EXCLUDE_URL = List.of(
-            "/login", "/logout", "/account/join/**", "/token/**",
-            "/uploads/**", "/member/**", "/account/**",
+            "/login", "/logout", "/token/**", "/",
             "/js/**", "/css/**", "/fonts/**", "/images/**",
             "/system/meta", "/system/init/**", "/v3/api-docs",
-            "/swagger-resources/**", "/swagger-ui.html", "/swagger-ui/**", "/favicon.ico");
+            "/favicon.ico");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -56,7 +55,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
             // 토큰 검증
-            Object checkJwt = jwtUtils.checkJwt(request);
+            Object checkJwt = jwtUtils.checkCookieJwt(request);
             // 검증후 토큰 복호화 데이터가 아닌경우, 에러
             if (!(checkJwt instanceof DecodedJWT)) {
                 String errCode = (String)checkJwt;
@@ -85,6 +84,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
             filterChain.doFilter(request, response);
+
         }
     }
 

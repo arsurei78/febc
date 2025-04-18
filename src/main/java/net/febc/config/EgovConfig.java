@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Import;
 	EgovWebMvcConfiguration.class,
 	QueryDslConfig.class,
 	CacheConfig.class,
-	SwaggerConfig.class
 })
 public class EgovConfig {
 

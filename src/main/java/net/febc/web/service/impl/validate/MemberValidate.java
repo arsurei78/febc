@@ -7,7 +7,7 @@ import net.febc.cmmn.web.ValidateErrorResponse;
 import net.febc.web.dto.req.member.ReqChgDto;
 import net.febc.web.dto.req.member.ReqInsertDto;
 import net.febc.web.repository.first.write.MemberInfoRepository;
-import org.apache.tika.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

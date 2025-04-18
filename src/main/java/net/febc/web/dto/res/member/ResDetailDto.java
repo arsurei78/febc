@@ -1,6 +1,5 @@
 package net.febc.web.dto.res.member;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import net.febc.web.repository.first.entity.member.MemberInfo;
@@ -9,17 +8,17 @@ import net.febc.web.repository.first.entity.member.MemberInfo;
 @Setter
 public class ResDetailDto {
 
-    @ApiModelProperty(value = "회원 고유 번호", example = "1")
+    //@ApiModelProperty(value = "회원 고유 번호", example = "1")
     private Long id;
-    @ApiModelProperty(value = "이름", example = "홍길동")
+    //@ApiModelProperty(value = "이름", example = "홍길동")
     private String name;
-    @ApiModelProperty(value = "성별(M:남성, F:여성)", example = "F")
+    //@ApiModelProperty(value = "성별(M:남성, F:여성)", example = "F")
     private String gender;
-    @ApiModelProperty(value = "기수", example = "1")
+    //@ApiModelProperty(value = "기수", example = "1")
     private Integer generation;
-    @ApiModelProperty(value = "회비", example = "70000")
+    //@ApiModelProperty(value = "회비", example = "70000")
     private Integer dues;
-    @ApiModelProperty(value = "상태", example = "true")
+    //@ApiModelProperty(value = "상태", example = "true")
     private boolean state;
 
     /**
