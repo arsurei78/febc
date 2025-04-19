@@ -1,13 +1,14 @@
 package net.febc.security;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import net.febc.cmmn.utils.CommonUtils;
 import net.febc.cmmn.web.BaseResponse;
 import net.febc.cmmn.web.BaseResponseCode;
-import lombok.RequiredArgsConstructor;
 import net.febc.web.dto.req.user.UserAdapter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +23,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static net.febc.cmmn.constant.Constants.LOGIN_TOKEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -69,14 +69,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             // 조건에 의해 인증 정보를 갱신
             // 세션에서 회원ID를 습득
             UserAdapter userAdapter = (UserAdapter)userDetailsService.loadUserByUsername(userId);
-            Claim claimToken = decodedJWT.getClaim(LOGIN_TOKEN);
-
-            // 2중 로그인 체크
-            // DB의 토큰 정보와 jwt의 토큰 정보가 일치하지 않는경우, 로그인 요구
-            if (!userAdapter.getUserInfo().getApiToken().equals(claimToken.asString())) {
-                errMapping(response, BaseResponseCode.LOGIN_DUPLICATE);
-                return;
-            }
 
             // 로그인 정보를 Security Context에 저장
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -85,6 +77,12 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
+            if (jwtUtils.isTokenExpiringSoon(request)) {
+                // 처리후 쿠키 설정
+                ResponseCookie cookie = jwtUtils.makeCookie(authenticationToken);
+                // 쿠키 설정
+                response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            }
         }
     }
 

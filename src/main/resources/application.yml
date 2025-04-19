@@ -82,7 +82,7 @@ aes:
 
 jwt:
   secret-key: Qiws8sD4mU7CSKhUX6q82t69KEkp7K9ff2QCu4k9gDJNgFUJ
-  access-expire: 86400 # 단위(초)
+  access-expire: 1800 # 단위(초)
   refresh-expire: 86400 # 단위(초)
 
 springfox:

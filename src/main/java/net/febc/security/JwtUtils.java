@@ -8,6 +8,8 @@ import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import net.febc.cmmn.constant.AppConstants;
 import net.febc.cmmn.constant.Constants;
@@ -15,15 +17,14 @@ import net.febc.cmmn.utils.CommonUtils;
 import net.febc.cmmn.web.BaseResponseCode;
 import net.febc.web.dto.res.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -114,6 +115,20 @@ public class JwtUtils {
         return new TokenDto(Constants.AT_HEADER, token, CommonUtils.dateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS, localDateTime));
     }
 
+
+    public ResponseCookie makeCookie(Authentication authResult) {
+        // 쿠키를 작성
+        TokenDto tokenDto = makeAccessToken(authResult.getName(), authResult.getAuthorities(), UUID.randomUUID().toString());
+        // 만료시간
+        long expire = appConstants.getMJWT_AT_EXP_TIME();
+        return ResponseCookie.from("jwt", tokenDto.getToken())
+                .httpOnly(true)
+                //.secure(true) // https의 경우, 활성화
+                .path("/")
+                .maxAge(Duration.ofSeconds(expire))
+                .build();
+    }
+
     private String extractTokenFromCookies(Cookie[] cookies) {
         if (cookies == null) return null;
         for (Cookie cookie : cookies) {
@@ -159,6 +174,22 @@ public class JwtUtils {
         }
 
         return verify;
+    }
+
+    public boolean isTokenExpiringSoon(HttpServletRequest request) {
+
+        String authorization = extractTokenFromCookies(request.getCookies());
+        String secretKey = appConstants.getMJWT_SECRET();
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey.getBytes())
+                .parseClaimsJws(authorization)
+                .getBody();
+
+        Date expiration = claims.getExpiration();
+        long timeToExpire = expiration.getTime() - System.currentTimeMillis();
+
+        return timeToExpire <= 60_000;  // 60,000ms = 1분
     }
 
     /**
