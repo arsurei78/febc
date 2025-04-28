@@ -1,0 +1,10 @@
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  .print-area {
+    width: 100%;
+    /* 필요시 높이, 배경색 등 조정 */
+  }
+}

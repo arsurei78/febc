@@ -1,106 +1,126 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" >
 <head>
-  <div th:replace="layout/layout_header.html::header"></div>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <div th:replace="layout/layout_header.html::header"></div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/flatpickr.min.css" />
+    <link rel="stylesheet" href="/css/monthSelect.css" />
+    <script src="/js/monthSelectPlugin.js"></script>
 </head>
 <body>
+
 <div th:replace="layout/layout_menu.html::menu"></div>
-<div class="content-wrapper">
-  <div class="container mt-5" style="max-width: 500px;">
-    <h2 class="mb-4 text-center">지출 / 수입</h2>
-    <form th:action="@{/account/proc/chg}"  method="post" id="chgForm">
-      <input type="hidden" name="id" th:value="${info.id}"/>
-      <div class="mb-3">
-        <label class="form-label">수입 / 지출</label>
-        <div>
-          <span th:if="${#strings.equals(error, 'type')}">*</span>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="type" id="expen" value="O" th:checked="${info.type eq 'O'}" >
-            <label class="form-check-label" for="expen">지출</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="type" id="income" value="I" th:checked="${info.type eq 'I'}" >
-            <label class="form-check-label" for="income">수입</label>
-          </div>
-        </div>
-      </div>
 
-      <!-- 항목 -->
-      <div class="mb-3">
-        <label for="expensensType" class="form-label">항목</label>
-        <span th:if="${#strings.equals(error, 'expensensType')}">*</span>
-        <select id="expensensType" name="expensensType" class="custom-select rounded-0">
-          <option
-                  th:each="type : ${expensensMap}"
-                  th:value="${type.key}"
-                  th:text="${type.value}"
-                  th:selected="${type.key == info.expensensType}">
-          </option>
-        </select>
-      </div>
+<div class="wrapper">
+    <div class="container mt-5" style="max-width: 500px;">
+        <h2 class="mb-4 text-center">회비 납입(수정)</h2>
+        <form th:action="@{/dues/proc/chg}"  method="post" id="insertForm">
+            <input type="hidden" name="duesId" id="duesId" th:value="${info.duesId}"/>
+            <!-- 이름 -->
+            <div class="mb-3">
+                <label  class="form-label">이 름</label>
+                <label class="form-label" th:text="${info.name}"></label>
+            </div>
 
-      <!-- 해당월 -->
-      <div class="mb-3">
-        <input type="text" id="datePicker" placeholder="날짜를 선택하세요">
-        <span th:if="${#strings.equals(error, 'selectedDate')}">*</span>
-        <input type="hidden" name="selectedDate" id="selectedDate" />
-      </div>
+            <div class="mb-3">
+                <input type="text" id="monthPicker" placeholder="납부 월을 선택하세요.">
+                <div th:if="${error}">
+                    <div >*</div>
+                </div>
+                <input type="hidden" name="selectedDate" id="selectedDate" />
+            </div>
 
-      <!-- 금액 -->
-      <div class="mb-3">
-        <label for="amount" class="form-label">회비</label>
-        <span th:if="${#strings.equals(error, 'amount')}">*</span>
-        <input type="text" class="form-control" id="amount" name="amount" th:value="${info.amount}" placeholder="0원" required>
-      </div>
+            <!-- 납부 예정액 -->
+            <div class="mb-3">
+                <label for="payment" class="form-label">납부 예정액</label><p>
+                <label class="form-label" id="exPayment" th:text="${info.exPayment}"></label>
+            </div>
 
-      <!-- 메모 -->
-      <div class="mb-3">
-        <label for="memo">메모를 입력하세요:</label><br>
-        <span th:if="${#strings.equals(error, 'memo')}">*</span>
-        <textarea id="memo" name="memo" rows="5" cols="60"  th:text="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
-      </div>
+            <!-- 회비 -->
+            <div class="mb-3">
+                <label for="payment" class="form-label">납부 예정액</label>
+                <input type="text" class="form-control" id="payment" name="payment" th:value="${info.payment}" placeholder="납부한 금액을 입력하세요" required>
+            </div>
 
-      <!-- 제출 버튼 -->
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary w-100">작성</button>
-      </div>
-      <div class="mb-3">
-        <div class="d-flex justify-content-center align-items-center">
-          <a class="btn btn-secondary w-100" role="button" aria-disabled="true" th:href="|/account/view/list|">목록으로 돌아가기</a>
-        </div>
-      </div>
-    </form>
-  </div>
+            <!-- 메모 -->
+            <div class="mb-3">
+                <label for="memo">메모를 입력하세요:</label><br>
+                <span th:if="${#strings.equals(error, 'memo')}">*</span>
+                <textarea id="memo" name="memo" rows="5" cols="60"  th:field="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
+            </div>
+
+            <!-- 제출 버튼 -->
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary w-100">변 경</button>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="btn btn-secondary w-100" role="button" aria-disabled="true" th:href="|/dues/view/list|">목록으로 돌아가기</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <footer th:replace="layout/layout_footer.html::footer">
 </footer>
 <!-- Bootstrap JS (선택사항, 일부 컴포넌트에 필요) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
-  // 오늘 날짜 구하기 (YYYY-MM-DD 형식)
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  const formattedToday = `${year}-${month}-${day}`;
+    // 이번달 구하기 (YYYY-MM 형식)
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    let formattedToday = `${year}-${month}`;
 
-  let selected = "[[${info.date}]]";
-  if (!selected && selected !== "") {
-    formattedToday = selected;
-  }
-  // 초기 히든값
-  $("#selectedDate").val(formattedToday);
+    let selectedDate = "[[${info.date}]]";
 
-  // flatpickr 초기화
-  flatpickr("#datePicker", {
-    dateFormat: "Y-m-d",
-    minDate: "0203-01-01",
-    maxDate: "2050-12-31",
-    defaultDate: formattedToday,
-    onChange: function(selectedDates, dateStr) {
-      $("#selectedDate").val(dateStr);
+    if (selectedDate && selectedDate !== "") {
+      formattedToday = selectedDate;
     }
-  });
+
+    // 초기 히든값
+    $("#selectedDate").val(formattedToday);
+    flatpickr("#monthPicker", {
+     locale: "ko",
+     dateFormat: "Y-m",
+     defaultDate: formattedToday,
+     plugins: [
+       new monthSelectPlugin({
+        shorthand: true, // "Jan", "Feb"...
+        dateFormat: "Y-m", // format output
+        altFormat: "F Y", // format display
+        theme: "light"
+       })
+     ],
+     onChange: function(selectedDates, dateStr, instance) {
+        // 현재 화면과 동일한 월을 지정한경우, 반응하지 않음
+        if ($("#selectedDate").val() != dateStr) {
+            $.ajax({
+                type : "POST",
+                url : "/dues/proc/search",
+                contentType: 'application/json',
+                data : JSON.stringify({ memberId : "[[${info.memberId}]]", month : dateStr }),
+                success : function(res) {
+                     // 선택월의 정보가 존재하면 선택월의 정보 표출
+                    if (res !== null && res !== "") {
+                        $("#duesId").val(res.duesId);
+                        $("#payment").val(res.payment);
+                        $("#memo").val(res.memo);
+                        $("#selectedDate").val(res.date);
+                        fp.setDate(res.date, false);
+                    } else {
+                        // 정보가 존재하지 않으면 신규 페이지로 이동
+                        window.location.href = '/dues/view/insert/' + [[${info.memberId}]];
+                    }
+                },
+                error : function(xhr, status, error) {
+                }
+            })
+        }
+        $("#selectedDate").val(dateStr);
+     }
+    });
 </script>

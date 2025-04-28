@@ -9,9 +9,11 @@ import net.febc.web.dto.req.member.ReqChgDto;
 import net.febc.web.dto.req.member.ReqInsertDto;
 import net.febc.web.dto.req.member.ReqListDto;
 import net.febc.web.dto.res.BasePaginationDto;
+import net.febc.web.dto.res.dues.PaymentInfo;
 import net.febc.web.dto.res.member.ResDetailDto;
 import net.febc.web.dto.res.member.ResListDto;
 import net.febc.web.repository.first.entity.member.MemberInfo;
+import net.febc.web.repository.first.impl.DuesRepositoryImpl;
 import net.febc.web.repository.first.impl.MemberInfoRepositoryImpl;
 import net.febc.web.repository.first.write.MemberInfoRepository;
 import net.febc.web.service.impl.validate.MemberValidate;
@@ -19,7 +21,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class MemberServiceImpl {
     private final MemberInfoRepository memberInfoRepository;
     private final MemberInfoRepositoryImpl memberInfoRepositoryImpl;
     private final MemberValidate memberValidate;
+    private final DuesRepositoryImpl duesRepositoryImpl;
 
     /**
      * 멤버 작성
@@ -115,7 +122,8 @@ public class MemberServiceImpl {
         if (reqListDto == null) {
             reqListDto = new ReqListDto();
         }
-        Page<ResListDto> memberInfoList = memberInfoRepositoryImpl.getMemberInfoList(reqListDto);
+
+        Page<ResListDto> memberInfoList = memberInfoRepositoryImpl.getMemberInfoList(reqListDto, notPaymentMember());
         // 멤버 리스트 반환
         return new BaseResponse<>(new BasePaginationDto<>(memberInfoList, reqListDto.getOffset(), Constants.PAGE_BLOCK_SIZE));
     }
@@ -134,5 +142,33 @@ public class MemberServiceImpl {
             return new BaseResponse<>(List.of(new ValidateErrorResponse("member", BaseResponseCode.MEMBER_IS_NOT_FOUND)));
         }
         return new BaseResponse<>(new ResDetailDto(memberInfo));
+    }
+
+    /**
+     * 미납 정보를 조회
+     */
+    private List<Long> notPaymentMember() {
+        // 전체 납입월
+        List<LocalDate> localDates = duesRepositoryImpl.getduesList();
+        // 전체 회원 정보를 가져와 전체 납입 정보를 작성
+        List<PaymentInfo> totalMemberInfoList = memberInfoRepositoryImpl.getTotalMemberInfo();
+        List<PaymentInfo> allList = new ArrayList<>();
+        for (PaymentInfo info : totalMemberInfoList) {
+            for(LocalDate localDate : localDates) {
+                if (info.getJoinAt().isBefore(localDate)) {
+                    allList.add(new PaymentInfo(info, localDate));
+                }
+            }
+        }
+        Set<PaymentInfo> paymentSet = new HashSet<>(duesRepositoryImpl.getPaymentMember());
+        // 미납정보
+        List<PaymentInfo> noPaymentlist = allList.stream()
+                .filter(p -> !paymentSet.contains(p))
+                .toList();
+
+        return noPaymentlist.stream()
+                .map(PaymentInfo::getId)
+                .toList();
+
     }
 }

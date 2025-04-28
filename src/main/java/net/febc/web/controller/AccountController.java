@@ -87,4 +87,20 @@ public class AccountController {
 
         return "account/list";
     }
+
+    @PostMapping("/proc/list")
+    public String procList(@ModelAttribute ReqListDto dto, Model model) {
+        BaseResponse<BasePaginationDto> result = accountService.getList(dto);
+        BasePaginationDto listData = result.getData();
+
+        model.addAttribute("searchData", dto.getSearchData());
+        model.addAttribute("type", dto.getType());
+        model.addAttribute("startDate", dto.getStartDate());
+        model.addAttribute("endDate", dto.getEndDate());
+
+        model.addAttribute(Constants.PAGE_CONTENTS, listData.getContents());
+        model.addAttribute(Constants.PAGE_PAGINATION, listData);
+
+        return "account/list";
+    }
 }

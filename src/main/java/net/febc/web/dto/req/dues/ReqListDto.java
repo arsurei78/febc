@@ -50,7 +50,8 @@ public class ReqListDto {
         if (StringUtils.isEmpty(this.startDate)) {
             return LocalDate.now().withDayOfMonth(1);
         }
-        return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.startDate);
+        String[] dates = this.startDate.split("-");
+        return LocalDate.of(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]), 1);
     }
 
     /**
@@ -61,6 +62,9 @@ public class ReqListDto {
         if (StringUtils.isEmpty(this.endDate)) {
             return YearMonth.now().atEndOfMonth();
         }
-        return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.endDate);
+
+        String[] dates = this.endDate.split("-");
+        // 마지막날
+        return YearMonth.of(Integer.valueOf(dates[0]), Integer.valueOf(dates[1])).atEndOfMonth();
     }
 }

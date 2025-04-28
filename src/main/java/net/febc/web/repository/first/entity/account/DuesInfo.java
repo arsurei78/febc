@@ -26,16 +26,12 @@ public class DuesInfo {
     @JoinColumn(name = "member_info_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private MemberInfo memberInfo;
     
-    @Column(name = "year", nullable = false)
-    @Comment("입금년")
-    private Integer year;
-
-    @Column(name = "month", nullable = false)
-    @Comment("입금월")
-    private Integer month;
+    @Column(name = "date", nullable = false)
+    @Comment("납입해당일")
+    private LocalDate date;
 
     @Column(name = "deposit_at", nullable = false)
-    @Comment("입금일")
+    @Comment("실제 입금일")
     private LocalDate depositAT;
 
     @Column(name = "standard_account", nullable = false)
@@ -46,6 +42,6 @@ public class DuesInfo {
     @Comment("실제 입금액")
     private Integer deposit;
 
-    @Column(name = "memo", nullable = false, length = 256)
+    @Column(name = "memo", length = 256)
     private String memo;
 }

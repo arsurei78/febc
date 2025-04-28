@@ -66,16 +66,10 @@ public class AccountInfoRepositoryImpl {
         if (StringUtils.isNotBlank(dto.getType())) {
             expression.and(expensesInfo.type.eq(dto.getType())) ;
         }
-        // 지출 타입
-        if (StringUtils.isNotBlank(dto.getExpensensType())) {
-            expression.and(expensesInfo.expensType.eq(ExpensensEnum.valueOf(dto.getExpensensType())));
-        }
         // 메모
         if (StringUtils.isNotBlank(dto.getSearchData())) {
             expression.and(expensesInfo.memo.contains(dto.getSearchData()));
         }
-
-
         return expression;
     }
 }

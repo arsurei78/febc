@@ -22,7 +22,7 @@ public class ResListDto {
     // 날짜
     private String date;
     // 금액
-    private Integer amount;
+    private String amount;
 
     @QueryProjection
     public ResListDto(Long id,
@@ -34,6 +34,6 @@ public class ResListDto {
         this.type = type;
         this.expensensType = Constants.expensensMap.get(expensensEnum.toString());
         this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, date);
-        this.amount = amount;
+        this.amount = CommonUtils.makeMoney(amount);
     }
 }

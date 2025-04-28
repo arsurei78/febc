@@ -36,7 +36,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     // 요청 인증 무시 패스
     public static final List<String> EXCLUDE_URL = List.of(
-            "/login", "/logout", "/token/**", "/",
+            "/login", "/logout", "/token/**", "/", "/error",
             "/js/**", "/css/**", "/fonts/**", "/images/**",
             "/system/meta", "/system/init/**", "/v3/api-docs",
             "/favicon.ico");
@@ -47,21 +47,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         // 접속 URL
         String servletPath = request.getServletPath();
         if (EXCLUDE_URL.stream().anyMatch(exclude -> CommonUtils.match(exclude, servletPath))){
+
             filterChain.doFilter(request, response);
         } else {
-            // 접속 가능 시간 체크(00시에서 02시 접속 금지)
-            if ( checkAccessDeniedTime()) {
-                errMapping(response, BaseResponseCode.UNAVAILABLE_CONNECT_TIME);
-                return;
-            }
             // 토큰 검증
             Object checkJwt = jwtUtils.checkCookieJwt(request);
-            // 검증후 토큰 복호화 데이터가 아닌경우, 에러
-            if (!(checkJwt instanceof DecodedJWT)) {
-                String errCode = (String)checkJwt;
-                errMapping(response, errCode);
-                return;
-            }
 
             DecodedJWT decodedJWT = (DecodedJWT)checkJwt;
             String userId = decodedJWT.getSubject();
@@ -75,14 +65,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(userAdapter, userAdapter.getPassword(), userAdapter.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-            filterChain.doFilter(request, response);
-
             if (jwtUtils.isTokenExpiringSoon(request)) {
                 // 처리후 쿠키 설정
                 ResponseCookie cookie = jwtUtils.makeCookie(authenticationToken);
                 // 쿠키 설정
                 response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             }
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -93,23 +82,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
      * @throws IOException
      */
     private void errMapping (HttpServletResponse response, String errCode) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType(APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding("utf-8");
-        if (BaseResponseCode.LOGIN_DUPLICATE.equals(errCode)) {
-            new ObjectMapper().writeValue(response.getWriter(), new BaseResponse<>(BaseResponseCode.ERROR_LOGIN, errCode));
-        } else {
-            new ObjectMapper().writeValue(response.getWriter(),
-                    new BaseResponse<>(CommonUtils.validateResponse("", errCode)));
-        }
-
+        response.sendRedirect("/error");
     }
 
     /**
      * 접근 불가 시간을 체크
      * @return
      */
-    private boolean checkAccessDeniedTime() {
+/*    private boolean checkAccessDeniedTime() {
         LocalDateTime now = LocalDateTime.now();
         // 접속 불가 시작 시간
         LocalDateTime startBlock = LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 0, 0,0);
@@ -117,5 +97,5 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         LocalDateTime endBlock = LocalDateTime.of(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), 2, 0,0);
         // 00시에서 02시 사이에 접속 불가
         return now.isAfter(startBlock) && now.isBefore(endBlock);
-    }
+    }*/
 }

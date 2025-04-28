@@ -11,7 +11,7 @@ public class ReqListDto {
     // 검색어(이름)
     private String searchData;
     // 상태(입/퇴단 여부, Y:입단, N:퇴단)
-    private String state;
+    private String joinState;
     // 검색 페이지
     private Integer page;
     // 페이지당 출력 건수

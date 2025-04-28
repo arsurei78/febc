@@ -1,6 +1,7 @@
 server:
   port: 12000
-
+  tomcat:
+    use-apr: false
   error:
     whitelabel:
       enabled: false

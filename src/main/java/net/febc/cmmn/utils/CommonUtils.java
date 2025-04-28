@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -242,4 +243,28 @@ public class CommonUtils {
         return List.of(new ValidateErrorResponse(field, messageCode));
     }
 
+
+    /**
+     * 통화 포멧 변경
+     * @param money
+     * @return
+     */
+    public static String makeMoney(Integer money) {
+        DecimalFormat df = new DecimalFormat("#,###");
+        return df.format(money) + " 원";
+    }
+
+    /**
+     * 년월정보를 가져옴
+     * @param year
+     * @param month
+     * @return
+     */
+    public static String makeMonth(Integer year, Integer month) {
+        if (month < 10) {
+            return String.format("%d-0%d", year, month);
+        } else {
+            return String.format("%d-%d", year, month);
+        }
+    }
 }

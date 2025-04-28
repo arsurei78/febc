@@ -23,7 +23,7 @@ public class ExpensesInfo extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date")
+    @Column(name = "date",  nullable = false)
     @Comment("정산일")
     private LocalDate date;
 
@@ -39,6 +39,6 @@ public class ExpensesInfo extends BaseTime {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
-    @Column(name = "memo", nullable = false, length = 256)
+    @Column(name = "memo", length = 256)
     private String memo;
 }

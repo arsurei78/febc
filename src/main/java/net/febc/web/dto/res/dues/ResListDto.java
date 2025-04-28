@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.febc.cmmn.constant.Constants;
 import net.febc.cmmn.utils.CommonUtils;
-import net.febc.web.repository.comm.ExpensensEnum;
 
 import java.time.LocalDate;
 
@@ -20,24 +19,25 @@ public class ResListDto {
     // 납입일
     private String date;
     // 납입금액
-    private Integer amount;
+    private String payment;
     // 납입대상
     private String name;
     // 기수
     private Integer generation;
+    // 미납여부
+    private boolean notPayment;
 
     @QueryProjection
     public ResListDto(Long id,
-                      LocalDate date,
-                      Integer year,
-                      Integer month,
+                      LocalDate duesDate,
+                      LocalDate paymentDate,
                       Integer generation,
-                      Integer amount,
+                      Integer payment,
                       String name) {
         this.id = id;
-        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, date);
-        this.paymentMonth = String.format("%d년 %d월", year, month);
-        this.amount = amount;
+        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, paymentDate);
+        this.paymentMonth = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMM, duesDate);
+        this.payment = CommonUtils.makeMoney(payment);
         this.generation = generation;
         this.name = name;
     }

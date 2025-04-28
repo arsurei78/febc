@@ -16,15 +16,20 @@ public class ResListDto {
     private Integer generation;
     //@ApiModelProperty(value = "상태" , example = "true")
     private Boolean state;
+    // 미납여부 (true:미납)
+    private boolean notPaymentFlg;
+
 
     @QueryProjection
     public ResListDto(Long id,
                       String name,
                       Integer generation,
-                      Boolean state) {
+                      Boolean state,
+                      boolean notPaymentFlg) {
         this.memberId = id;
         this.name = name;
         this.generation = generation;
         this.state = state;
+        this.notPaymentFlg = notPaymentFlg;
     }
 }

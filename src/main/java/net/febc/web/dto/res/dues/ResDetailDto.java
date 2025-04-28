@@ -12,34 +12,38 @@ import java.time.LocalDate;
 @Setter
 public class ResDetailDto {
     // 회비 납부 고유ID
-    private Long id;
-    // 기수
-    private Integer generation;
+    private Long duesId;
+    // 회원 고유 ID
+    private Long memberId;
     // 이름
     private String name;
     // 납부 예정액
-    private Integer exPayAmount;
+    private Integer exPayment;
     // 납부 액
-    private Integer payAmount;
+    private String payment;
     // 납입 대상월
     private String paymentMonth;
     // 납부일
     private String date;
+    // 메모
+    private String memo;
 
     @QueryProjection
-    public ResDetailDto(Long id,
-                        Integer generation,
+    public ResDetailDto(Long duesId,
+                        Long memberId,
                         String name,
-                        Integer exPayAmount,
-                        Integer payAmount,
+                        Integer exPayment,
+                        Integer payment,
                         LocalDate paymentMonth,
-                        LocalDate date) {
-        this.id = id;
-        this.generation = generation;
+                        LocalDate duesDate,
+                        String memo) {
+        this.duesId = duesId;
+        this.memberId = memberId;
         this.name = name;
-        this.exPayAmount = exPayAmount;
-        this.payAmount = payAmount;
-        this.paymentMonth = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMM, paymentMonth);;
-        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, date);
+        this.exPayment = exPayment;
+        this.payment = CommonUtils.makeMoney(payment);
+        this.paymentMonth = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMM_HAN, paymentMonth);;
+        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMM, duesDate);
+        this.memo = memo;
     }
 }

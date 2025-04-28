@@ -2,6 +2,7 @@ package net.febc.web.dto.res.member;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.febc.cmmn.utils.CommonUtils;
 import net.febc.web.repository.first.entity.member.MemberInfo;
 
 @Getter
@@ -17,7 +18,7 @@ public class ResDetailDto {
     //@ApiModelProperty(value = "기수", example = "1")
     private Integer generation;
     //@ApiModelProperty(value = "회비", example = "70000")
-    private Integer dues;
+    private String dues;
     //@ApiModelProperty(value = "상태", example = "true")
     private boolean state;
 
@@ -30,7 +31,7 @@ public class ResDetailDto {
         this.name = memberInfo.getName();
         this.gender = memberInfo.getGender();
         this.generation = memberInfo.getGeneration();
-        this.dues = memberInfo.getDues();
+        this.dues = CommonUtils.makeMoney(memberInfo.getDues());
         this.state = memberInfo.getState();
     }
 }

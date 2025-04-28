@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:replace="layout/layout_menu.html::menu"></div>
-<div class="content-wrapper">
+<div class="wrapper">
   <div class="container mt-5" style="max-width: 500px;">
     <h2 class="mb-4 text-center">지출 / 수입</h2>
     <form th:action="@{/account/proc/chg}"  method="post" id="chgForm">
@@ -58,12 +58,15 @@
       <div class="mb-3">
         <label for="memo">메모를 입력하세요:</label><br>
         <span th:if="${#strings.equals(error, 'memo')}">*</span>
-        <textarea id="memo" name="memo" rows="5" cols="60"  th:text="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
+        <textarea id="memo" name="memo" rows="5" cols="60"  th:field="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
       </div>
 
       <!-- 제출 버튼 -->
       <div class="mb-3">
-        <button type="submit" class="btn btn-primary w-100">작성</button>
+        <button type="submit" class="btn btn-primary w-100">변 경</button>
+      </div>
+      <div class="mb-3">
+        <a class="btn btn-warning w-100" role="button" aria-disabled="true" th:href="|/account/view/insert|">지출 / 수입 등록</a>
       </div>
       <div class="mb-3">
         <div class="d-flex justify-content-center align-items-center">
@@ -82,10 +85,10 @@
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, '0');
   const day = String(today.getDate()).padStart(2, '0');
-  const formattedToday = `${year}-${month}-${day}`;
+  let formattedToday = `${year}-${month}-${day}`;
 
   let selected = "[[${info.date}]]";
-  if (!selected && selected !== "") {
+  if (selected && selected !== "") {
     formattedToday = selected;
   }
   // 초기 히든값

@@ -10,7 +10,7 @@ public class BaseResponseCode {
     public static final String LOGIN_PASSWORD_CHECK = "LOGIN_PASSWORD_CHECK";
 	public static final String LOGIN_FAIL = "LOGIN_FAIL";
     public static final String NOT_FOUND_USER = "NOT_FOUND_USER";
-
+	
 
 
 	private BaseResponseCode(){}
@@ -57,6 +57,12 @@ public class BaseResponseCode {
 	public static final String MEMO_NOT_INPUT = "MEMO_NOT_INPUT";
 	// 날짜 선택이 잘못되었을떄
 	public static final String EXPENSENS_SELECTED_DATE = "EXPENSENS_SELECTED_DATE";
-
+	
+	// 선택 날짜가 잘못된경우
+	public static final String DUES_SELECTED_DATE = "DUES_SELECTED_DATE";
+	// 납입금액 입금 안함
+	public static final String DUES_DEPOSIT_NOT_INPUT = "DUES_DEPOSIT_NOT_INPUT";
+	// 납입 정보를 찾을수 없음
+	public static final String DUES_NOT_FOUND = "DUES_NOT_FOUND";
 }
 

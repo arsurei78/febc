@@ -32,16 +32,13 @@ public class AccountValidate {
             return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
-        if(StringUtils.isEmpty(dto.getType()) || !List.of("I", "O").contains(dto.getType())) {
+        if(StringUtils.isEmpty(dto.getType()) ||
+                !List.of(Constants.EXPENSE_TYPE_I, Constants.EXPENSE_TYPE_O).contains(dto.getType())) {
             return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
         }
 
         if(dto.getAmount() == null || dto.getAmount().equals(Integer.valueOf(0))) {
             return List.of(new ValidateErrorResponse("amount", BaseResponseCode.AMOUNT_NOT_INPUT));
-        }
-
-        if(StringUtils.isEmpty(dto.getMemo())) {
-            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.MEMO_NOT_INPUT));
         }
 
         if(StringUtils.isEmpty(dto.getSelectedDate())) {
@@ -71,7 +68,8 @@ public class AccountValidate {
             return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
-        if(StringUtils.isEmpty(dto.getType()) || !List.of("I", "O").contains(dto.getType())) {
+        if(StringUtils.isEmpty(dto.getType()) ||
+                !List.of(Constants.EXPENSE_TYPE_I, Constants.EXPENSE_TYPE_O).contains(dto.getType())) {
             return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
         }
 

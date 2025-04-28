@@ -14,7 +14,7 @@ public class ResDetailDto {
     private String type;
     private String expensensType;
     private String date;
-    private Integer amount;
+    private String amount;
     private String memo;
 
     /**
@@ -25,7 +25,7 @@ public class ResDetailDto {
         id = info.getId();
         type = info.getType();
         expensensType = Constants.expensensMap.get(info.getExpensType().toString());
-        amount = info.getAmount();
+        amount = CommonUtils.makeMoney(info.getAmount());
         date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYYYMMDD, info.getDate());
         memo = info.getMemo();
     }

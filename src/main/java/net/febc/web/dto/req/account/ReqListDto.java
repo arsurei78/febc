@@ -17,8 +17,6 @@ public class ReqListDto {
     private String searchData;
     // 타입 지출(O) / 수입 타입(I)"
     private String type;
-    // 지출 / 수입 타입(교사 사례비(TS), 지방세(LOT), 소득세(INT), 선물(GIFT), 간식비(SNACK), 악보제본비(SHEET), 기타(ORTHER))"
-    private String expensensType;
     // 검색 시작일
     private String startDate;
     // 검색 종료일
@@ -52,7 +50,8 @@ public class ReqListDto {
         if (StringUtils.isEmpty(this.startDate)) {
             return LocalDate.now().withDayOfMonth(1);
         }
-        return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.startDate);
+        String[] dates = this.startDate.split("-");
+        return LocalDate.of(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]), 1);
     }
 
     /**
@@ -63,6 +62,9 @@ public class ReqListDto {
         if (StringUtils.isEmpty(this.endDate)) {
             return YearMonth.now().atEndOfMonth();
         }
-        return CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.endDate);
+
+        String[] dates = this.endDate.split("-");
+        // 마지막날
+        return YearMonth.of(Integer.valueOf(dates[0]), Integer.valueOf(dates[1])).atEndOfMonth();
     }
 }

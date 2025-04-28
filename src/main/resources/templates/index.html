@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
@@ -34,7 +34,9 @@
     <h3 class="text-center mb-4">로그인</h3>
 
     <!-- 로그인 실패 시 알림 예시 -->
-    <!-- <div class="alert alert-danger" role="alert">아이디 또는 비밀번호가 잘못되었습니다.</div> -->
+    <div th:if="${error}">
+        <div class="alert alert-danger" role="alert"></div>
+    </div>
 
     <form action="/login" method="POST">
         <div class="mb-3">
@@ -51,13 +53,6 @@
             <button type="submit" class="btn btn-primary">로그인</button>
         </div>
     </form>
-
-    <!-- 회원가입이나 비밀번호 찾기 링크가 필요하면 여기에 -->
-    <!--
-    <div class="text-center mt-3">
-      <a href="/signup">회원가입</a> | <a href="/forgot">비밀번호 찾기</a>
-    </div>
-    -->
 </div>
 
 <!-- Bootstrap JS -->

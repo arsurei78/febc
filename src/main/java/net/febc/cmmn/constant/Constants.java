@@ -32,10 +32,11 @@ public class Constants {
     // 날짜 포멧
     public static final String DATE_FORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT_YYYYMMDD = "yyyy-MM-dd";
-    public static final String DATE_FORMAT_YYYYMMDD_HAN = "yyyy년 MM월 dd일";
+    public static final String DATE_FORMAT_YYYYMM = "yyyy-MM";
+    public static final String DATE_FORMAT_YYMMDD = "yyyy-MM-dd.";
     public static final String DATE_FORMAT_YYMMDD_HAN = "yy년 MM월 dd일";
     public static final String DATE_FORMAT_YYYYMMDD_HHMM_HAN = "YYYY년 MM월 dd일 HH시 mm분";
-    public static final String DATE_FORMAT_YYYYMM = "yy년 MM월";
+    public static final String DATE_FORMAT_YYYYMM_HAN = "yy년 MM월";
 
     // 영문 대/소문자, 한글, 숫자 사용가능
     public static final String CHECK_PATTERN_HANGUL_ALL = "^[가-힣]{2,6}$";
@@ -54,6 +55,11 @@ public class Constants {
     // 지출/수입 메뉴 MAP
     public static final Map<String, String> expensensMap = new LinkedHashMap<>();
 
+    // 수입
+    public static final String EXPENSE_TYPE_I = "I";
+    // 지출
+    public static final String EXPENSE_TYPE_O = "O";
+
     static {
         expensensMap.put(ExpensensEnum.TS.toString(), "교사 사례비");
         expensensMap.put(ExpensensEnum.LOT.toString(), "지방세");
@@ -61,6 +67,8 @@ public class Constants {
         expensensMap.put(ExpensensEnum.GIFT.toString(), "선물");
         expensensMap.put(ExpensensEnum.SNACK.toString(), "간식비");
         expensensMap.put(ExpensensEnum.SHEET.toString(), "악보제본비");
+        expensensMap.put(ExpensensEnum.DONA.toString(), "후원금");
+        expensensMap.put(ExpensensEnum.BINT.toString(), "이자");
         expensensMap.put(ExpensensEnum.ORTHER.toString(), "기타");
     }
 }

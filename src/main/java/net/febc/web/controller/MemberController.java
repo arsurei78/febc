@@ -44,10 +44,12 @@ public class MemberController {
     }
 
     @PostMapping("/proc/list")
-    @ResponseBody
-    public String listMember(@RequestBody ReqListDto reqListDto, Model model) {
+    public String listMember(@ModelAttribute ReqListDto reqListDto, Model model) {
         BaseResponse<BasePaginationDto> result = memberService.listMember(reqListDto);
         BasePaginationDto listData = result.getData();
+
+        model.addAttribute("joinState", reqListDto.getJoinState());
+        model.addAttribute("searchData", reqListDto.getSearchData());
 
         model.addAttribute(Constants.PAGE_CONTENTS, listData.getContents());
         model.addAttribute(Constants.PAGE_PAGINATION, listData);

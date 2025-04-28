@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <div th:replace="layout/layout_header.html::header"></div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/flatpickr.min.css" />
+    <link rel="stylesheet" href="/css/monthSelect.css" />
+    <script src="/js/monthSelectPlugin.js"></script>
+</head>
+<body>
+    <div th:replace="layout/layout_menu.html::menu"></div>
+
+       <div class="wrapper">
+           <form th:action="@{/closing/view/insert}" method="post" id="insertForm">
+               <div class="text-center mb-4">
+                   <h3>단회비 결산보고</h3>
+                   <div class="d-flex align-items-end gap-3 justify-content-center mt-3">
+                       <div>
+                           <label for="startDate" class="form-label">시작일</label>
+                           <input type="date" class="form-control" id="startDate" required name="startDate">
+                       </div>
+                       <div>
+                           <label for="endDate" class="form-label">종료일</label>
+                           <input type="date" class="form-control" id="endDate" required name="endDate">
+                       </div>
+                       <div class="align-self-end">
+                           <button class="btn btn-primary mt-2" onclick="showSelectedDates()">결산 작성</button>
+                       </div>
+                   </div>
+                   <p class="mt-2" id="selectedDates"></p>
+               </div>
+           </form>
+           <form th:action="@{/closing/view/list}" method="post" id="listForm">
+           </form>
+            <div class="container mt-5">
+                <h3 class="mb-3 text-center">회비 납부 리스트</h3>
+                <table class="table table-bordered table-striped text-center align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 5%;">No</th>
+                            <th style="width: 25%;">결산 기간</th>
+                            <th style="width: 50%;">제목</th>
+                            <th style="width: 20%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${contents.isEmpty()}">
+                            <td class="text-center" colspan="9">검색 결과가 없습니다.</td>
+                        </tr>
+                        <tr th:unless="${contents.isEmpty()}" th:each="content, status : ${contents}" >
+                            <td th:text="${content.id}"></td>
+                            <td th:text="${content.date}"></td>
+                            <td th:text="${content.title}"></td>
+                            <td >
+                                <a class="btn btn-success btn-sm" role="button" aria-disabled="true" th:href="|/closing/view/detail/${content.id}|">수정</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:replace="layout/pagination.html::page"></div>
+        </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<footer th:replace="layout/layout_footer.html::footer">
+</footer>
+
+<script>
+    function page(page) {
+        let form = $("#listForm");
+        const param = $("<input type='hidden' value=" + page + " name='page' readonly>");
+        form.append(param)
+        form.submit();
+    }
+</script>

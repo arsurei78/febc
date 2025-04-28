@@ -6,7 +6,7 @@
 
 <body>
     <div th:replace="layout/layout_menu.html::menu"></div>
-    <div class="content-wrapper">
+    <div class="wrapper">
         <div class="container mt-5" style="max-width: 500px;">
           <h2 class="mb-4 text-center">단원 상세</h2>
           <form th:action="@{/member/proc/chg}"  method="post" id="chgForm">
@@ -52,7 +52,10 @@
               &nbsp;<label class="form-label">2025년 05월 </label>
             </div>
             <!-- 제출 버튼 -->
-            <p/>
+
+            <div class="mb-3">
+               <a class="btn btn-primary w-100" role="button" aria-disabled="true" th:href="|/dues/view/insert/${user.id}|">회비 납부</a><p/>
+            </div>
             <th:block th:if="${user.state}">
               <div class="mb-3">
                 <button type="submit" class="btn btn-success w-100">수정 하기</button><p/>

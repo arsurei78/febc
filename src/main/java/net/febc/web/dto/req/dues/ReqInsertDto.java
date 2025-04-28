@@ -12,21 +12,24 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ReqInsertDto {
+    // 멤버 번호
+    private Long memberId;
     // 입금일
     private String date;
     // 납입금액
-    private Integer deposit;
+    private Integer payment;
     // 메모
     private String memo;
 
     public DuesInfo toEntity(MemberInfo memberInfo) {
-        LocalDate localDate = CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.date);
+        LocalDate duesDate = CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, this.date + "-01");
         return DuesInfo
                 .builder()
-                .deposit(deposit)
-                .year(localDate.getYear())
-                .month(localDate.getMonth().getValue())
-                .depositAT(localDate)
+                .deposit(payment)
+                .date(duesDate)
+                .depositAT(LocalDate.now())
+                .memberInfo(memberInfo)
+                .standardAccount(memberInfo.getDues())
                 .memo(memo)
                 .build();
     }
