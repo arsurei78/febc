@@ -1,5 +1,6 @@
 package net.febc.web.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -21,6 +22,8 @@ public class CustErrorController implements ErrorController {
         // 에러 상태 코드 가져오기
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
+        String msg = (String)request.getAttribute("error");
+
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
             model.addAttribute("code", statusCode);
@@ -31,21 +34,30 @@ public class CustErrorController implements ErrorController {
                     model.addAttribute("message", "페이지를 찾을 수 없습니다.");
                     break;
                 case 500:
-                    model.addAttribute("message", "서버 내부 오류입니다.");
+                    if(StringUtils.isNotEmpty(msg)) {
+                        model.addAttribute("message", msg);
+                    } else {
+                        model.addAttribute("message", "서버 내부 오류입니다.");
+                    }
                     break;
                 default:
                     model.addAttribute("message", "오류가 발생했습니다.");
             }
+
+
+            ResponseCookie deleteOld = ResponseCookie.from("jwt", "")
+                    .path("/")
+                    .maxAge(0)
+                    .build();
+            response.addHeader(HttpHeaders.SET_COOKIE, deleteOld.toString());
+
         } else {
-            model.addAttribute("message", "오류가 발생했습니다.");
+            if(StringUtils.isNotEmpty(msg)) {
+                model.addAttribute("message", msg);
+            } else {
+                model.addAttribute("message", "서버 내부 오류입니다.");
+            }
         }
-
-
-        ResponseCookie deleteOld = ResponseCookie.from("jwt", "")
-                .path("/")
-                .maxAge(0)
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, deleteOld.toString());
 
         return "error/error"; // templates/error/customError.html 로 이동
     }

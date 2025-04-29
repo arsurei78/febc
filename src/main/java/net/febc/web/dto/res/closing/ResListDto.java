@@ -29,8 +29,8 @@ public class ResListDto {
                       boolean deleteFlg) {
         this.id = id;
         this.title = title;
-        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, startDate) +
-                " - " + CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD_HAN, endDate);
+        this.date = CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD, startDate) +
+                "-" + CommonUtils.localDateFormat(Constants.DATE_FORMAT_YYMMDD, endDate);
         this.deleteFlg = deleteFlg;
     }
 }

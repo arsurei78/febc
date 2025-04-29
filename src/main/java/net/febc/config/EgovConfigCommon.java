@@ -7,6 +7,7 @@ import org.egovframe.rte.fdl.cmmn.trace.manager.DefaultTraceHandleManager;
 import org.egovframe.rte.fdl.cmmn.trace.manager.TraceHandlerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.util.AntPathMatcher;
 
@@ -19,12 +20,15 @@ public class EgovConfigCommon {
 	}
 
 	@Bean
+	@Primary
 	public ReloadableResourceBundleMessageSource messageSource() {
 		ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
 		reloadableResourceBundleMessageSource.setBasenames(
-				"classpath:/message",
+				"classpath:/message/messages",
 				"classpath:/org/egovframe/rte/fdl/idgnr/messages/idgnr",
-				"classpath:/org/egovframe/rte/fdl/property/messages/properties");
+				"classpath:/org/egovframe/rte/fdl/property/messages/properties"
+		);
+		reloadableResourceBundleMessageSource.setDefaultEncoding("UTF-8");
 		reloadableResourceBundleMessageSource.setCacheSeconds(60);
 		return reloadableResourceBundleMessageSource;
 	}

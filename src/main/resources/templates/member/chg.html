@@ -9,6 +9,9 @@
     <div class="wrapper">
         <div class="container mt-5" style="max-width: 500px;">
           <h2 class="mb-4 text-center">단원 상세</h2>
+          <div th:if="${errorMsg}">
+              <span class="alert alert-danger" role="alert" th:text="${errorMsg}"></span>
+          </div>
           <form th:action="@{/member/proc/chg}"  method="post" id="chgForm">
             <input type="hidden" name="id" th:value="${user.id}"/>
             <!-- 이름 -->

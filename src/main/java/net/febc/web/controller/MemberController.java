@@ -66,7 +66,7 @@ public class MemberController {
             model.addAttribute("gender", insertDto.getGender());
             model.addAttribute("generation", insertDto.getGeneration());
             model.addAttribute("dues", insertDto.getDues());
-            model.addAttribute("error", result.getValidate().get(0));
+            model.addAttribute("errorMsg", result.getValidate().get(0).getMessage());
             return "/member/write";
         }
         return "redirect:/member/view/detail/"+result.getData().getId();
@@ -77,7 +77,7 @@ public class MemberController {
         BaseResponse<ResDetailDto> result = memberService.chgMember(reqChgDto);
         if (result.getValidate() != null &&
                 !result.getValidate().isEmpty()) {
-            model.addAttribute("error", result.getValidate().get(0));
+            model.addAttribute("errorMsg", result.getValidate().get(0).getMessage());
         }
         return "redirect:/member/view/detail/"+reqChgDto.getId();
     }
@@ -96,13 +96,4 @@ public class MemberController {
     public BaseResponse<ResDetailDto> deleteMember(@PathVariable("memberId") Long memberId) {
         return memberService.deleteMember(memberId);
     }
-
-/*    @GetMapping("/proc/{memberId}")
-    @ApiOperation(tags = "1.멤버 관리", value = "멤버 조회", notes = "멤버 조회")
-    public String detailMember(@PathVariable("memberId") Long memberId, Model model) {
-        BaseResponse<ResDetailDto> result = memberService.detailMember(memberId);
-        ResDetailDto data = result.getData();
-        model.addAttribute("memberInfo", data);
-        return "/member/detail";
-    }*/
 }

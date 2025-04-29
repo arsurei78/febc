@@ -39,6 +39,5 @@ public class ReqInsertDto {
                 .amount(amount)
                 .memo(memo)
                 .build();
-
     }
 }

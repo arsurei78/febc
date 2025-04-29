@@ -17,6 +17,9 @@
   <div class="wrapper">
     <div class="container mt-5" style="max-width: 500px;">
       <h2 class="mb-4 text-center">회비 납입(신규)</h2>
+      <div th:if="${errorMsg}">
+          <span class="alert alert-danger" role="alert" th:text="${errorMsg}"></span>
+      </div>
       <form th:action="@{/dues/proc}"  method="post" id="insertForm">
         <input type="hidden" name="memberId" th:value="${info.memberId}"/>
         <!-- 이름 -->
@@ -27,9 +30,6 @@
 
         <div class="mb-3">
            <input type="text" id="monthPicker" placeholder="납부 월을 선택하세요.">
-            <div th:if="${error}">
-                <div >*</div>
-            </div>
            <input type="hidden" name="date" id="selectedDate" />
         </div>
 
@@ -48,7 +48,6 @@
         <!-- 메모 -->
         <div class="mb-3">
           <label for="memo">메모를 입력하세요:</label><br>
-          <span th:if="${#strings.equals(error, 'memo')}">*</span>
           <textarea id="memo" name="memo" rows="5" cols="60"  placeholder="상세 내역을 적어주세요"></textarea>
         </div>
 

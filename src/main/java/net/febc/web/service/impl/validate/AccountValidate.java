@@ -29,25 +29,25 @@ public class AccountValidate {
     public List<ValidateErrorResponse> insertCheck(ReqInsertDto dto) {
 
         if(!EnumUtils.isValidEnum(ExpensensEnum.class, dto.getExpensensType())) {
-            return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
+            return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.ACCOUNT_EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
         if(StringUtils.isEmpty(dto.getType()) ||
                 !List.of(Constants.EXPENSE_TYPE_I, Constants.EXPENSE_TYPE_O).contains(dto.getType())) {
-            return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
+            return List.of(new ValidateErrorResponse("type", BaseResponseCode.ACCOUNT_TYPE_NOT_SUPPORT));
         }
 
         if(dto.getAmount() == null || dto.getAmount().equals(Integer.valueOf(0))) {
-            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.AMOUNT_NOT_INPUT));
+            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.ACCOUNT_AMOUNT_NOT_INPUT));
         }
 
         if(StringUtils.isEmpty(dto.getSelectedDate())) {
-            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.EXPENSENS_SELECTED_DATE));
+            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.ACCOUNT_EXPENSENS_SELECTED_DATE));
         }
         try{
             CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, dto.getSelectedDate());
         } catch (Exception e) {
-            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.EXPENSENS_SELECTED_DATE));
+            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.ACCOUNT_EXPENSENS_SELECTED_DATE));
         }
 
         return List.of();
@@ -65,29 +65,25 @@ public class AccountValidate {
         }
 
         if(!EnumUtils.isValidEnum(ExpensensEnum.class, dto.getExpensensType())) {
-            return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.EXPENSENS_TYPE_NOT_SUPPORT));
+            return List.of(new ValidateErrorResponse("expensensType", BaseResponseCode.ACCOUNT_EXPENSENS_TYPE_NOT_SUPPORT));
         }
 
         if(StringUtils.isEmpty(dto.getType()) ||
                 !List.of(Constants.EXPENSE_TYPE_I, Constants.EXPENSE_TYPE_O).contains(dto.getType())) {
-            return List.of(new ValidateErrorResponse("type", BaseResponseCode.TYPE_NOT_SUPPORT));
+            return List.of(new ValidateErrorResponse("type", BaseResponseCode.ACCOUNT_TYPE_NOT_SUPPORT));
         }
 
         if(dto.getAmount() == null || dto.getAmount().equals(Integer.valueOf(0))) {
-            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.AMOUNT_NOT_INPUT));
-        }
-
-        if(StringUtils.isEmpty(dto.getMemo())) {
-            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.MEMO_NOT_INPUT));
+            return List.of(new ValidateErrorResponse("amount", BaseResponseCode.ACCOUNT_AMOUNT_NOT_INPUT));
         }
 
         if(StringUtils.isEmpty(dto.getSelectedDate())) {
-            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.EXPENSENS_SELECTED_DATE));
+            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.ACCOUNT_EXPENSENS_SELECTED_DATE));
         }
         try{
             CommonUtils.strToLocalDate(Constants.DATE_FORMAT_YYYYMMDD, dto.getSelectedDate());
         } catch (Exception e) {
-            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.EXPENSENS_SELECTED_DATE));
+            return List.of(new ValidateErrorResponse("selectedDate", BaseResponseCode.ACCOUNT_EXPENSENS_SELECTED_DATE));
         }
 
         return List.of();

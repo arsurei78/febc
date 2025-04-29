@@ -8,6 +8,9 @@
   <div class="wrapper">
     <div class="container mt-5" style="max-width: 500px;">
       <h2 class="mb-4 text-center">단원 가입</h2>
+      <div th:if="${errorMsg}">
+          <span class="alert alert-danger" role="alert" th:text="${errorMsg}"></span>
+      </div>
       <form th:action="@{/member/proc}"  method="post" id="insertForm">
         <!-- 이름 -->
         <div class="mb-3">

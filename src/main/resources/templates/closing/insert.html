@@ -37,7 +37,9 @@
     <div class="text-center mb-4">
         <h3>단회비 결산보고<span th:text="|(${info.closingDate})|"></span></span></h3>
     </div>
-
+    <div th:if="${errorMsg}">
+        <span class="alert alert-danger" role="alert" th:text="${errorMsg}"></span>
+    </div>
     <div class="summary-box mb-5">
         <table class="table table-bordered">
             <tbody>

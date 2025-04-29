@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
@@ -43,7 +44,6 @@ public class AccountController {
             model.addAttribute("amount", dto.getAmount());
             model.addAttribute("memo", dto.getMemo());
             model.addAttribute("errorMsg", insert.getValidate().get(0).getMessage());
-            model.addAttribute("error", insert.getValidate().get(0).getField());
             return "account/insert";
         }
         return "redirect:/account/view/detail/"+insert.getData().getId();
@@ -54,7 +54,7 @@ public class AccountController {
         BaseResponse<ResDetailDto> result = accountService.chgAccount(chgDto);
         if (result.getValidate() != null &&
                 !result.getValidate().isEmpty()) {
-            return "redirect:/account/view/detail/"+chgDto.getId();
+            return "redirect:/account/view/detail/"+chgDto.getId() + "?error=" + result.getValidate().get(0).getMessage();
         }
         model.addAttribute("info", result.getData());
         model.addAttribute("expensensMap", Constants.expensensMap);
@@ -62,14 +62,16 @@ public class AccountController {
     }
 
     @GetMapping("/view/detail/{id}")
-    public String detail(@PathVariable("id") Long id, Model model) {
+    public String detail(@PathVariable("id") Long id,
+                         HttpServletRequest request, Model model) {
         BaseResponse<ResDetailDto> result = accountService.detailAccount(id);
         if (result.getValidate() != null &&
                 !result.getValidate().isEmpty()) {
             model.addAttribute("errorMsg", result.getValidate().get(0).getMessage());
-            model.addAttribute("error", result.getValidate().get(0).getField());
             return "account/view/list";
         }
+
+        model.addAttribute("errorMsg", request.getAttribute("error"));
         model.addAttribute("expensensMap", Constants.expensensMap);
         model.addAttribute("info", result.getData());
         return "account/chg";

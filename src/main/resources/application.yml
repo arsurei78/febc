@@ -9,6 +9,7 @@ server:
 
     tomcat:
       additional-tld-skip-patterns: "*.jar" # 내부 톰켓 사용의 경우, File Not Found발생시
+
 app:
   file:
     upload-dir: file:///var/www/token/uploads/

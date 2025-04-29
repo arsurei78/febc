@@ -17,6 +17,9 @@
 <div class="wrapper">
     <div class="container mt-5" style="max-width: 500px;">
         <h2 class="mb-4 text-center">회비 납입(수정)</h2>
+        <div th:if="${errorMsg}">
+            <span class="alert alert-danger" role="alert" th:text="${errorMsg}"></span>
+        </div>
         <form th:action="@{/dues/proc/chg}"  method="post" id="insertForm">
             <input type="hidden" name="duesId" id="duesId" th:value="${info.duesId}"/>
             <!-- 이름 -->
@@ -48,8 +51,7 @@
             <!-- 메모 -->
             <div class="mb-3">
                 <label for="memo">메모를 입력하세요:</label><br>
-                <span th:if="${#strings.equals(error, 'memo')}">*</span>
-                <textarea id="memo" name="memo" rows="5" cols="60"  th:field="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
+                <textarea id="memo" name="memo" rows="5" cols="60"  th:text="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
             </div>
 
             <!-- 제출 버튼 -->

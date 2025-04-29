@@ -14,7 +14,6 @@
       <div class="mb-3">
         <label class="form-label">수입 / 지출</label>
         <div>
-          <span th:if="${#strings.equals(error, 'type')}">*</span>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="type" id="expen" value="O" th:checked="${info.type eq 'O'}" >
             <label class="form-check-label" for="expen">지출</label>
@@ -29,7 +28,6 @@
       <!-- 항목 -->
       <div class="mb-3">
         <label for="expensensType" class="form-label">항목</label>
-        <span th:if="${#strings.equals(error, 'expensensType')}">*</span>
         <select id="expensensType" name="expensensType" class="custom-select rounded-0">
           <option
                   th:each="type : ${expensensMap}"
@@ -43,22 +41,19 @@
       <!-- 해당월 -->
       <div class="mb-3">
         <input type="text" id="datePicker" placeholder="날짜를 선택하세요">
-        <span th:if="${#strings.equals(error, 'selectedDate')}">*</span>
         <input type="hidden" name="selectedDate" id="selectedDate" />
       </div>
 
       <!-- 금액 -->
       <div class="mb-3">
         <label for="amount" class="form-label">회비</label>
-        <span th:if="${#strings.equals(error, 'amount')}">*</span>
         <input type="text" class="form-control" id="amount" name="amount" th:value="${info.amount}" placeholder="0원" required>
       </div>
 
       <!-- 메모 -->
       <div class="mb-3">
         <label for="memo">메모를 입력하세요:</label><br>
-        <span th:if="${#strings.equals(error, 'memo')}">*</span>
-        <textarea id="memo" name="memo" rows="5" cols="60"  th:field="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
+        <textarea id="memo" name="memo" rows="5" cols="60"  th:text="${info.memo}"  placeholder="상세 내역을 적어주세요"></textarea>
       </div>
 
       <!-- 제출 버튼 -->

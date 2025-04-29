@@ -49,7 +49,7 @@ public class DuesController {
                 data.setPayment(dto.getPayment());
                 model.addAttribute("info", data);
             }
-            model.addAttribute("error", result.getValidate());
+            model.addAttribute("errorMsg", result.getValidate().get(0).getMessage());
 
             return "dues/insert";
         }
