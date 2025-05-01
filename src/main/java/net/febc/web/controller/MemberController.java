@@ -35,8 +35,13 @@ public class MemberController {
 
     @GetMapping("/view/list")
     public String viewList(Model model) {
-        BaseResponse<BasePaginationDto> result = memberService.listMember(new ReqListDto());
+        ReqListDto reqListDto = new ReqListDto();
+        reqListDto.setJoinState("Y");
+        BaseResponse<BasePaginationDto> result = memberService.listMember(reqListDto);
         BasePaginationDto listData = result.getData();
+
+        model.addAttribute("joinState", reqListDto.getJoinState());
+        model.addAttribute("searchData", reqListDto.getSearchData());
 
         model.addAttribute(Constants.PAGE_CONTENTS, listData.getContents());
         model.addAttribute(Constants.PAGE_PAGINATION, listData);

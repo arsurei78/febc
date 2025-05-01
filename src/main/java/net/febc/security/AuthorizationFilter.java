@@ -52,7 +52,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         } else {
             // 토큰 검증
             Object checkJwt = jwtUtils.checkCookieJwt(request);
-
+            System.out.println("++++++++++++++++++++++++++++++++++");
+            System.out.println("checkJwt : " + checkJwt);
+            System.out.println("++++++++++++++++++++++++++++++++++");
             DecodedJWT decodedJWT = (DecodedJWT)checkJwt;
             String userId = decodedJWT.getSubject();
 

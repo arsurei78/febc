@@ -24,8 +24,8 @@ application {
 }
 
 bootJar {
-    archivesBaseName = 'sessionTemplate'
-    archiveFileName = 'empty_project-SNAPSHOT.jar'
+    archivesBaseName = 'febc'
+    archiveFileName = 'febc-SNAPSHOT.jar'
     archiveVersion = "0.0.1"
 }
 
@@ -34,6 +34,12 @@ configurations {
         extendsFrom annotationProcessor
     }
     querydsl.extendsFrom compileClasspath
+
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging' // logback 제거
+        exclude group: 'ch.qos.logback', module: 'logback-classic'                       // logback 직접 제거
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'              // log4j2 충돌 제거
+    }
 }
 
 repositories {
@@ -76,7 +82,6 @@ querydsl {
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
-
 compileJava.dependsOn compileQuerydsl
 
 dependencies {
@@ -84,8 +89,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-logging'
-//    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2' // log4j2 적용
 
     // DB
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -96,7 +100,7 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
     testAnnotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-    // EgovFrame`
+    // eGovFrame
     implementation("org.egovframe.rte:org.egovframe.rte.ptl.mvc:${egovframe}") {
         exclude group: 'org.egovframe.rte', module: 'spring-modules-validation'
         exclude group: 'commons-logging', module: 'commons-logging'
@@ -124,10 +128,6 @@ dependencies {
     implementation "org.springframework.security:spring-security-core:5.7.1"
     implementation "org.springframework.security:spring-security-web:5.7.1"
     implementation "org.springframework.security:spring-security-config:5.7.1"
-
-    // Swagger
-//    implementation "io.springfox:springfox-boot-starter:3.0.0"
-//    implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

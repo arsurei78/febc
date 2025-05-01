@@ -26,10 +26,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
@@ -78,6 +75,7 @@ public class JwtUtils {
         } catch (AlgorithmMismatchException
                  | SignatureVerificationException
                  | InvalidClaimException e ) {
+            e.fillInStackTrace();
             return BaseResponseCode.JWT_AUTHORIZATION_ERROR;
         } catch (RuntimeException e) {
             // 기타 에러
@@ -96,23 +94,23 @@ public class JwtUtils {
      * @return String token값
      */
     public TokenDto makeAccessToken(String userId, Collection<? extends GrantedAuthority> authorities, String loginToken) {
-        LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
         // 외부 요청
         long expire = appConstants.getMJWT_AT_EXP_TIME();
         String secretKey = appConstants.getMJWT_SECRET();
 
-        Date expireTime = Timestamp.valueOf(now.plusSeconds(expire));
+        Instant now = Instant.now(); // 항상 UTC 기준
 
         String token = JWT.create()
                 .withSubject(userId)
-                .withExpiresAt(expireTime)
+                .withExpiresAt(Date.from(now.plusSeconds(expire)))           //  UTC 기준 만료시간
                 .withClaim("roles", authorities.stream().map(GrantedAuthority::getAuthority).toList())
                 .withClaim(LOGIN_TOKEN, loginToken)
-                .withIssuedAt(Timestamp.valueOf(now))
+                .withIssuedAt(Date.from(now))                                //  UTC 기준 발급시간
                 .sign(Algorithm.HMAC256(secretKey));
-        // 현재 시간
-        LocalDateTime localDateTime = new Timestamp(expireTime.getTime()).toLocalDateTime();
-        return new TokenDto(Constants.AT_HEADER, token, CommonUtils.dateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS, localDateTime));
+
+        LocalDateTime localExpireTime = LocalDateTime.ofInstant(now.plusSeconds(expire), ZoneId.of("Asia/Seoul"));
+        return new TokenDto(Constants.AT_HEADER, token, CommonUtils.dateFormat(DATE_FORMAT_YYYYMMDD_HHMMSS, localExpireTime));
+
     }
 
 
@@ -123,6 +121,7 @@ public class JwtUtils {
         long expire = appConstants.getMJWT_AT_EXP_TIME();
         return ResponseCookie.from("jwt", tokenDto.getToken())
                 .httpOnly(true)
+                .sameSite("Lax")
                 //.secure(true) // https의 경우, 활성화
                 .path("/")
                 .maxAge(Duration.ofSeconds(expire))
@@ -161,14 +160,11 @@ public class JwtUtils {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(appConstants.getMJWT_SECRET())).build();
             // 토큰 검증
             verify = verifier.verify(authorization);
-        } catch (TokenExpiredException e) {
-            // 토큰 기간 만료 에러
-            return BaseResponseCode.JWT_TOKEN_EXPIRED;
-        } catch (AlgorithmMismatchException
-                 | SignatureVerificationException
-                 | InvalidClaimException e ) {
-            return BaseResponseCode.JWT_AUTHORIZATION_ERROR;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
+            System.out.println("+++++++++++++++++++++++++++");
+            System.out.println("MESSAGE" + e.getMessage());
+            System.out.println("ERROR" + e);
+            System.out.println("+++++++++++++++++++++++++++");
             // 기타 에러
             return BaseResponseCode.JWT_TOKEN_ERROR;
         }

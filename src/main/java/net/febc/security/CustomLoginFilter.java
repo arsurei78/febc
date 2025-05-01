@@ -47,7 +47,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         // 쿠키 설정
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         // 로그인 후 이동
-        // TODO /dashboard로 변경
         response.sendRedirect("/closing/view/list");
     }
 

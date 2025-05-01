@@ -6,8 +6,8 @@
         </Console>
         <!-- 파일  -->
         <RollingFile name ="RollingFile">
-            <FileName>/var/www/template/logs/template.log</FileName>
-            <FilePattern>/var/www/template/logs/%d{yyyy-MM-dd}_template.zip</FilePattern>
+            <FileName>/var/www/febc/logs/febc.log</FileName>
+            <FilePattern>/var/www/febc/logs/%d{yyyy-MM-dd}_febc.zip</FilePattern>
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p [%c] [%X{ClientIP}] [%X{sessionId}] %m%n</Pattern>
             </PatternLayout>
@@ -16,15 +16,15 @@
                 <TimeBasedTriggeringPolicy module="true" interval="1" />
             </Policies>
             <DefaultRolloverStrategy max="5" fileIndex="min" >
-                <Delete basePath="/var/www/template/logs/" maxDepth="3">
+                <Delete basePath="/var/www/febc/logs/" maxDepth="3">
                     <IfLastModified age="10d" />
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
 
         <RollingFile name ="RollingFileError">
-            <FileName>/var/www/template/logs/template_error.log</FileName>
-            <FilePattern>/var/www/template/logs/%d{yyyy-MM-dd}_template_error.zip</FilePattern>
+            <FileName>/var/www/febc/logs/febc_error.log</FileName>
+            <FilePattern>/var/www/febc/logs/%d{yyyy-MM-dd}_febc_error.zip</FilePattern>
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p [%c] [%X{ClientIP}] [%X{sessionId}] %m%n</Pattern>
             </PatternLayout>
@@ -33,7 +33,7 @@
                 <TimeBasedTriggeringPolicy module="true" interval="1" />
             </Policies>
             <DefaultRolloverStrategy max="5" fileIndex="min" >
-                <Delete basePath="/var/www/template/logs/" maxDepth="3">
+                <Delete basePath="/var/www/febc/logs/" maxDepth="3">
                     <IfLastModified age="10d" />
                 </Delete>
             </DefaultRolloverStrategy>

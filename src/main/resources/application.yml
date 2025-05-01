@@ -32,11 +32,11 @@ spring:
 
 logging:
   level:
-    root: debug
-    _org.springframework.web.servlet.HandlerMapping.Mappings: debug
+    root: INFO
+    _org.springframework.web.servlet.HandlerMapping.Mappings: INFO
     org:
       hibernate:
-        SQL: debug
+        SQL: INFO
         type:
           descriptor:
             sql: trace
@@ -50,9 +50,10 @@ spring:
 
   datasource:
     first:
-      jdbc-url: jdbc:mariadb://127.0.0.1:3306/febc?useUnicode=true&characterEncoding=utf8
-      username: root
-      password: tjdrhd5@
+      jdbc-url: jdbc:mariadb://43.203.121.206:3306/febc?useUnicode=true&characterEncoding=utf8
+      #jdbc-url: jdbc:mariadb://127.0.0.1:3306/febc?useUnicode=true&characterEncoding=utf8
+      username: arsurei
+      password: tmdqhd82I@
       driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
