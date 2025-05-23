@@ -39,18 +39,15 @@ public class CustErrorController implements ErrorController {
                     } else {
                         model.addAttribute("message", "서버 내부 오류입니다.");
                     }
+                    ResponseCookie deleteOld = ResponseCookie.from("jwt", "")
+                            .path("/")
+                            .maxAge(0)
+                            .build();
+                    response.addHeader(HttpHeaders.SET_COOKIE, deleteOld.toString());
                     break;
                 default:
                     model.addAttribute("message", "오류가 발생했습니다.");
             }
-
-
-            ResponseCookie deleteOld = ResponseCookie.from("jwt", "")
-                    .path("/")
-                    .maxAge(0)
-                    .build();
-            response.addHeader(HttpHeaders.SET_COOKIE, deleteOld.toString());
-
         } else {
             if(StringUtils.isNotEmpty(msg)) {
                 model.addAttribute("message", msg);
